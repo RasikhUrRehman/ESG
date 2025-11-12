@@ -1,0 +1,74 @@
+Section / القسم,Field (EN),الحقل (AR),Prev Year,Current,Target,Unit,Notes,Applicability,Input Type,Options
+Environment / البيئة,Scope 1 Emissions (tCO₂e),انبعاثات النطاق 1 (طن مكافئ CO₂),,,tCO₂e | طن مكافئ CO₂,,The company shall report Scope 1 emissions in tCO₂e (English/Arabic tooltips: Scope 1 = Direct emissions) [Metrics & Targets],All,Number,
+Environment / البيئة,Scope 2 Emissions (tCO₂e),انبعاثات النطاق 2 (طن مكافئ CO₂),,,tCO₂e | طن مكافئ CO₂,,The company shall report Scope 2 emissions in tCO₂e (English/Arabic tooltips: Scope 2 = Purchased energy) [Metrics & Targets],All,Number,
+Environment / البيئة,Scope 3 Emissions (tCO₂e),انبعاثات النطاق 3 (طن مكافئ CO₂),,,tCO₂e | طن مكافئ CO₂,,The company shall report Scope 3 emissions in tCO₂e (Optional) (English/Arabic tooltips: Scope 3 = Other indirect) [Metrics & Targets],All,Number,
+Environment / البيئة,Renewable Energy Share (%),نسبة الطاقة المتجددة (%),,,% | ٪,,The company shall report renewable energy share (English/Arabic tooltips: % of renewable energy) [Metrics & Targets],All,Number,
+Environment / البيئة,Energy Intensity,شدة الطاقة,[Auto],kWh/unit output | كيلوواط ساعة/وحدة الإنتاج,,,,Energy consumption normalized by unit of output (Auto: Total Energy / Output) - ADX comparability [Metrics & Targets],All,Auto,
+Environment / البيئة,Water Intensity,شدة المياه,[Auto],m³/unit output | م³/وحدة الإنتاج,,,,Water consumption normalized by unit of output (Auto: Total Water / Output) [Metrics & Targets],All,Auto,
+Environment / البيئة,Energy Consumption (kWh),استهلاك الطاقة (كيلوواط ساعة),,,kWh | كيلوواط ساعة,,The company shall report energy consumption (convert GJ to kWh: 1 GJ = 277.78 kWh in export) [Metrics & Targets],All,Number,
+Environment / البيئة,Water Consumption (m³),استهلاك المياه (م³),,,m³ | م³,,The company shall report water consumption (English/Arabic tooltips: Water used in operations) [Metrics & Targets],All,Number,
+Environment / البيئة,Water Reclaimed (m³),المياه المستعادة (م³),,,m³ | م³,,The company shall report water reclaimed (English/Arabic tooltips: Recycled water volume) [Metrics & Targets],All,Number,
+Environment / البيئة,Waste Generated (tonnes),النفايات المولدة (طن),,,tonnes | طن,,The company shall report waste generated (English/Arabic tooltips: Total waste produced) [Metrics & Targets],All,Number,
+Environment / البيئة,Waste Recycling Rate (%),معدل إعادة تدوير النفايات (%),,,% | ٪,,The company shall report waste recycling rate (English/Arabic tooltips: % recycled waste) [Metrics & Targets],All,Number,
+Environment / البيئة,Water Discharge Volumes (m³),حجم إطلاق المياه (م³),,,m³ | م³,,The company shall disclose total volume of water discharge (English/Arabic tooltips: Discharged water) [Metrics & Targets],All,Number,
+Environment / البيئة,Climate-related Investment (AED),الاستثمار المتعلق بالمناخ (درهم),,,AED | درهم,,Annual spend on decarbonisation/resilience/R&D (IFRS S2 metrics & targets) [Metrics & Targets],All,Number,
+Environment / البيئة,Scope 3 Categories Covered,فئات النطاق 3 المشمولة,,,Text,,List included Scope 3 categories (e.g., Purchased goods, Upstream transport) (IFRS S2 comparability) [Metrics & Targets],Advanced,Text,
+Environment / البيئة,Baseline Year (Emissions/Targets),سنة خط الأساس (الانبعاثات/الأهداف),,,Year,,Base year for targets and comparisons (IFRS S2) [Metrics & Targets],All,Year,
+Environment / البيئة,Boundary Method,منهجية الحدود التشغيلية,,,Dropdown,,Equity share / Financial control / Operational control (IFRS S2) [Metrics & Targets],All,Dropdown,[Equity share | الحصة, Financial control | السيطرة المالية, Operational control | السيطرة التشغيلية]
+Environment / البيئة,Emissions Factor Source,مصدر معامل الانبعاثات,,,Text,,Specify emissions factor source (e.g., IPCC, DEFRA) (IFRS S2 data quality) [Metrics & Targets],All,Text,
+Environment / البيئة,Gases Breakdown (CO₂),انبعاثات CO₂ (اختياري),,,tCO₂e | طن مكافئ CO₂,,Optional breakdown of CO₂ emissions (IFRS S2) [Metrics & Targets],All,Number,
+Environment / البيئة,Gases Breakdown (CH₄),انبعاثات CH₄ (اختياري),,,tCO₂e | طن مكافئ CO₂,,Optional breakdown of CH₄ emissions (IFRS S2) [Metrics & Targets],All,Number,
+Environment / البيئة,Gases Breakdown (N₂O),انبعاثات N₂O (اختياري),,,tCO₂e | طن مكافئ CO₂,,Optional breakdown of N₂O emissions (IFRS S2) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Community Investment (% of revenue),الاستثمار المجتمعي (% من الإيرادات),,,% | ٪,,The company shall report community investment as % of revenue (English/Arabic tooltips: % of revenue for community) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Employee Turnover Rate (%),معدل دوران الموظفين,,,% | ٪,,The company shall report employee turnover rate (English/Arabic tooltips: Turnover = Staff attrition rate) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Gender Diversity Ratio,نسبة تنوع الجنس,,,% | ٪,,The company shall report gender diversity ratio (English/Arabic tooltips: Gender balance %) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Lost Time Injury Rate (per 100 employees),معدل الإصابات الضائعة الوقت (لكل 100 موظف),,,per 100 employees | لكل 100 موظف,,The company shall report lost time injury rate (English/Arabic tooltips: LTIR = Injuries per 100) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Gender Pay Ratio,نسبة الفجوة في الأجور بين الجنسين,,,Ratio | نسبة,,Median male ÷ median female pay (ADX-aligned) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Temporary/Contract Workers (%),نسبة العمالة المؤقتة/المتعاقَد معها,,,% | ٪,,Share of workforce on temporary or contract basis (ADX metric) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Non-discrimination Policy,سياسة عدم التمييز,,,,,[Yes/No],Whether a formal non-discrimination policy exists [Governance],All,Dropdown,[Yes | نعم, No | لا]
+Social / الاجتماعي,OH&S Policy,سياسة الصحة والسلامة المهنية,,,,,[Yes/No],Whether a formal OH&S policy exists [Governance],All,Dropdown,[Yes | نعم, No | لا]
+Governance / الحوكمة,Board Oversight of ESG,إشراف مجلس الإدارة على الاستدامة,,,,,[Yes/No],The company shall report board oversight of ESG [Governance],All,Dropdown,[Yes | نعم, No | لا]
+Governance / الحوكمة,Independent Directors (%),نسبة الأعضاء المستقلين,,,% | ٪,,The company shall report the percentage of independent directors [Governance],All,Number,
+Governance / الحوكمة,CEO Pay Ratio,نسبة راتب الرئيس التنفيذي,,,Ratio | نسبة,,The company shall report CEO pay ratio [Governance],ADX,Number,
+Governance / الحوكمة,Audit/Risk/ESG Committee,لجنة التدقيق/المخاطر/الاستدامة,,,,,[Yes/No],The company shall report the existence of an Audit/Risk/ESG Committee [Governance],All,Dropdown,[Yes | نعم, No | لا]
+Governance / الحوكمة,Independent Directors (count),عدد الأعضاء المستقلين,,,Count | عدد,,The company shall report the count of independent directors (input) [Governance],All,Number,
+Governance / الحوكمة,Total Directors (count),إجمالي الأعضاء,,,Count | عدد,,The company shall report the total number of directors (input) [Governance],All,Number,
+Governance / الحوكمة,CEO Compensation (AED),تعويض الرئيس التنفيذي (درهم),,,AED | درهم,,The company shall report CEO compensation (input) [Governance],ADX,Number,
+Governance / الحوكمة,Median Employee Compensation (AED),الراتب المتوسط (درهم),,,AED | درهم,,The company shall report median employee compensation (input) [Governance],ADX,Number,
+Governance / الحوكمة,Board Diversity (%),تفصيل تنوع الجنس في المجلس,,,% | ٪,,The company shall distinguish gender diversity ratios at board level [Governance],All,Number,
+Governance / الحوكمة,Committee Chair Diversity (%),تنوع رؤساء اللجان,,,% | ٪,,The company shall disclose the percentage of committee chairs by gender [Governance],All,Number,
+Governance / الحوكمة,Management Oversight of ESG,الإشراف الإداري على الاستدامة,,,,,[Yes/No],Identify if management (not only the Board) formally oversees ESG [Governance],All,Dropdown,[Yes | نعم, No | لا]
+Governance / الحوكمة,ESG-linked Executive Pay,الربط بين الحوافز التنفيذية ومؤشرات الاستدامة,,,,,[Yes/No],Disclose if variable compensation is linked to ESG targets [Governance],All,Dropdown,[Yes | نعم, No | لا]
+Governance / الحوكمة,Data Privacy Policy,سياسة خصوصية البيانات,,,,,[Yes/No],State if a formal data privacy policy exists (add GDPR where applicable) [Governance],All,Dropdown,[Yes | نعم, No | لا]
+Governance / الحوكمة,Whistleblowing Mechanism,آلية الإبلاغ عن المخالفات,,,,,[Yes/No],Disclose if a speak-up/whistleblowing mechanism exists [Governance],All,Dropdown,[Yes | نعم, No | لا]
+Strategy / الاستراتيجية,Double Materiality Assessment,تقييم الأهمية المالية والبيئية/الاجتماعية,,,,,[Yes/No],The company shall report assessment of financial + environmental/social materiality (IFRS S1) [Strategy],All,Dropdown,[Yes | نعم, No | لا]
+Strategy / الاستراتيجية,Climate Scenario Analysis,تحليل السيناريوهات المناخية المستقبلية,,,,,[Yes/No],The company shall report forward-looking scenarios (e.g., +2°C, +4°C pathways) (IFRS S2) [Strategy],All,Dropdown,[Yes | نعم, No | لا]
+Strategy / الاستراتيجية,Net Zero 2050 Alignment,التوافق مع صافي الانبعاثات 2050,,,,,[Yes/No],The company shall report Net Zero 2050 alignment [Strategy],All,Dropdown,[Yes | نعم, No | لا]
+Strategy / الاستراتيجية,ESG Targets,أهداف الاستدامة,,,,Text,,The company shall report specific ESG targets [Strategy],All,Text,
+Strategy / الاستراتيجية,Target Year,السنة المستهدفة,,,,Year,,The company shall report associated timelines for achieving ESG targets [Strategy],All,Year,
+Strategy / الاستراتيجية,Climate Risk Management Process,عملية إدارة المخاطر المناخية,,,Text,,Describe processes used to identify, assess and manage climate risks (aligns to IFRS S2 Risk Management) [Risk Management],All,Text,
+Disclosure / الإفصاح,Sustainability Report Published,نشر تقرير الاستدامة,,,,,[Yes/No],Indicate if a standalone sustainability report is published [Disclosure],All,Dropdown,[Yes | نعم, No | لا]
+Disclosure / الإفصاح,Frameworks Used,الأطر المستخدمة,,,Text,,List frameworks used (GRI, SASB, CDP, IFRS/TCFD) [Disclosure],All,Text,
+Assurance / الضمان,External Assurance Statement,بيان التأكيد الخارجي,,,URL,,Link to external assurance/verification statement (if any) [Assurance],All,URL,
+Social / الاجتماعي,Community Investment (% of revenue),الاستثمار المجتمعي (% من الإيرادات),,,% | ٪,,The company shall report community investment as % of revenue (English/Arabic tooltips: % of revenue for community) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Employee Turnover Rate (%),معدل دوران الموظفين,,,% | ٪,,The company shall report employee turnover rate (English/Arabic tooltips: Turnover = Staff attrition rate) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Gender Diversity Ratio,نسبة تنوع الجنس,,,% | ٪,,The company shall report gender diversity ratio (English/Arabic tooltips: Gender balance %) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Lost Time Injury Rate (per 100 employees),معدل الإصابات الضائعة الوقت (لكل 100 موظف),,,per 100 employees | لكل 100 موظف,,The company shall report lost time injury rate (English/Arabic tooltips: LTIR = Injuries per 100) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Gender Pay Ratio,نسبة الفجوة في الأجور بين الجنسين,,,Ratio | نسبة,,Median male ÷ median female pay (ADX-aligned) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Temporary/Contract Workers (%),نسبة العمالة المؤقتة/المتعاقَد معها,,,% | ٪,,Share of workforce on temporary or contract basis (ADX metric) [Metrics & Targets],All,Number,
+Social / الاجتماعي,Non-discrimination Policy,سياسة عدم التمييز,,,,,[Yes/No],Whether a formal non-discrimination policy exists [Governance],All,Dropdown,[Yes | نعم, No | لا]
+Social / الاجتماعي,OH&S Policy,سياسة الصحة والسلامة المهنية,,,,,[Yes/No],Whether a formal OH&S policy exists [Governance],All,Dropdown,[Yes | نعم, No | لا]
+Compliance & Penalties / الامتثال والعقوبات,Previous Violations (count),عدد المخالفات السابقة,,,Count | عدد,,The company shall report previous violations count (last 24 months) [Metrics & Targets],All,Number,
+Compliance & Penalties / الامتثال والعقوبات,Estimated Fine (AED),الغرامة التقديرية (درهم),,[Auto],AED | درهم,,Auto-calculated: 50,000 * (2 ^ Violations) - Art. 16; supports audit log [Metrics & Targets],All,Auto,
+Compliance & Penalties / الامتثال والعقوبات,Violation Severity (1-5),شدة المخالفة (1-5),,,Index | فهرس,,The company shall report violation severity on a scale 1-5 (1=minor e.g. late filing; 5=major e.g. environmental breach) [Metrics & Targets],All,Number,
+Environment / البيئة,Water Consumption (m³),استهلاك المياه (م³),,,m³ | م³,,The company shall report water consumption (English/Arabic tooltips: Water used in operations) [Metrics & Targets],All,Number,
+Environment / البيئة,Water Reclaimed (m³),المياه المستعادة (م³),,,m³ | م³,,The company shall report water reclaimed (English/Arabic tooltips: Recycled water volume) [Metrics & Targets],All,Number,
+Environment / البيئة,Waste Generated (tonnes),النفايات المولدة (طن),,,tonnes | طن,,The company shall report waste generated (English/Arabic tooltips: Total waste produced) [Metrics & Targets],All,Number,
+Environment / البيئة,Waste Recycling Rate (%),معدل إعادة تدوير النفايات (%),,,% | ٪,,The company shall report waste recycling rate (English/Arabic tooltips: % recycled waste) [Metrics & Targets],All,Number,
+Environment / البيئة,Water Discharge Volumes (m³),حجم إطلاق المياه (م³),,,m³ | م³,,The company shall disclose total volume of water discharge (English/Arabic tooltips: Discharged water) [Metrics & Targets],All,Number,
+Carbon / الكربون,NRCC Registration Status,حالة التسجيل في السجل الوطني,,,,[Yes/No],Yes/No,The company shall report NRCC registration status (Cabinet 67/2024) [Metrics & Targets],All,Dropdown,[Yes | نعم, No | لا]
+Carbon / الكربون,Estimated Carbon Credits (tCO₂e),الأرصدة التقديرية (طن مكافئ ثاني أكسيد الكربون),,,tCO₂e | طن مكافئ CO₂,,The company shall report estimated credits (preview only) (Indicative only; NRCC registration & MRV rules apply) [Metrics & Targets],All,Auto,
+Carbon / الكربون,Carbon Credit Price (AED/tCO₂e),سعر رصيد الكربون (درهم/طن مكافئ ثاني أكسيد الكربون),,,AED | درهم,,The company shall report carbon credit price (market-linked placeholder) [Metrics & Targets],All,Number,
+Carbon / الكربون,Monthly ROI Estimate (AED),العائد الشهري المقدر (درهم),,[Auto],AED | درهم,,The company shall report monthly ROI estimate (Auto: Credits * Price / 12) (Indicative only; NRCC registration & MRV rules apply) [Metrics & Targets],All,Auto,
+Disclosure / الإفصاح,SDG Mapping,ربط أهداف التنمية المستدامة,,,,[Yes/No],Yes/No,The company shall report SDG mapping [Disclosure],All,Dropdown,[Yes | نعم, No | لا]
+Evidence Upload References / مراجع تحميل الأدلة,Evidence Links (per section),روابط الأدلة (لكل قسم),,,URL,,Multi-URL links to Evidence Vault; supports TLS 1.3 secure hyperlinks in PDFs [Assurance],All,URL,

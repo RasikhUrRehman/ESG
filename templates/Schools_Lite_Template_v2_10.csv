@@ -1,0 +1,71 @@
+Section / القسم,Field (EN),الحقل (AR),Prev Year,Current,Target,Unit,Notes,Applicability,Input Type,Options,Evidence Required?,Confidential?
+School / المدرسة,School Name,اسم المدرسة,,,,,Official registered name,All,Text,,No,No
+School / المدرسة,Education Authority ID (KHDA/ADEK/MOE),معرف الجهة التنظيمية,,,,,Enter the school’s regulator ID/code (if applicable),All,Text,,No,No
+School / المدرسة,Operator/Group,المشغل/المجموعة,,,,,If part of a group, name it; else “Independent”,All,Text,,No,No
+School / المدرسة,Green Loan Eligibility,أهلية القرض الأخضر,,,,,Eligible for green/retrofit finance (Phase 1.5),All,Dropdown,[Yes/No | نعم/لا],No,No
+School / المدرسة,Campus Type,نوع الحرم,,,,,Single site / Multi-site / Shared campus,All,Dropdown,[Single | موقع واحد, Multi-site | مواقع متعددة, Shared | مشترك],No,No
+School / المدرسة,Academic Year (YYYY–YYYY),السنة الأكاديمية,,,,,e.g., 2025–2026 (term dates vary by regulator),All,Text,,No,No
+School / المدرسة,Reporting Period Start,بداية فترة التقرير,,,,,YYYY-MM-DD (local),All,Text,,No,No
+School / المدرسة,Reporting Period End,نهاية فترة التقرير,,,,,YYYY-MM-DD (local),All,Text,,No,No
+Environment / البيئة,Output Metric Name,اسم مقياس المخرجات,,,,,Recommended: students_enrolled, m²_floor_area,All,Text,,No,No
+Environment / البيئة,Students Enrolled (FTE),عدد الطلاب (مكافئ دوام كامل),,,,,Used for per-student intensities; >0; non-negative (0–1e9); if 0 or blank, block saving per-student autos,All,Number,,No,No
+Environment / البيئة,Floor Area (gross m²),المساحة المبنية (متر مربع),,,,,m²,Used for per-m² intensities; >0; non-negative (0–1e9); if 0 or blank, block saving per-m² autos,All,Number,,No,No
+Environment / البيئة,Environmental Policy,سياسة بيئية,,,,,Formal policy exists?,All,Dropdown,[Yes/No | نعم/لا],No,No
+Environment / البيئة,Energy & Water Policy,سياسة الطاقة والمياه,,,,,Formal policy exists?,All,Dropdown,[Yes/No | نعم/لا],No,No
+Environment / البيئة,Waste & Recycling Policy,سياسة النفايات وإعادة التدوير,,,,,Formal policy exists?,All,Dropdown,[Yes/No | نعم/لا],No,No
+Environment / البيئة,Energy Management System,نظام إدارة الطاقة,,,,,Uses a recognized EMS?,All,Dropdown,[Yes/No | نعم/لا],No,No
+Energy / الطاقة,Total Electricity (kWh),إجمالي الكهرباء (كيلوواط ساعة),,,,,kWh,Accept MWh in upload; engine converts: 1 MWh = 1,000 kWh; ≥0; Evidence Required? (utility bills),All,Number,,Yes,No
+Energy / الطاقة,Total Fuel (kWh eq.),إجمالي الوقود (كيلوواط ساعة مكافئ),,,,,kWh,Diesel/LPG for generators/kitchens in kWh eq.; ≥0; Evidence Required? (fuel receipts),All,Number,,Yes,No
+Energy / الطاقة,Energy Use Intensity (kWh/m²),شدة الطاقة (كيلوواط ساعة/م²),,,,kWh/m²,Auto: (Electricity+Fuel)/Floor Area; Floor Area>0,All,Auto,,No,No
+Energy / الطاقة,Energy per Student (kWh/student),الطاقة لكل طالب (كيلوواط ساعة/طالب),,,,kWh/student,Auto: (Electricity+Fuel)/Students; Students>0,All,Auto,,No,No
+Energy / الطاقة,Renewable Share (%),نسبة الطاقة المتجددة (%),,,,%,On-site PV or certified procurement; 0–100,All,Number,,No,No
+Energy / الطاقة,Energy Intensity Target,هدف شدة الطاقة,,,,kWh/m² or kWh/student,Annual reduction target; specify basis in Notes; non-negative (0–1e9),All,Number,,No,No
+Water / المياه,Total Water (m³),إجمالي المياه (م³),,,,,m³,From utility/borewell; ≥0; Evidence Required? (water bills),All,Number,,Yes,No
+Water / المياه,Water Recycled (m³),المياه المعاد استخدامها (م³),,,,,m³,Recovered greywater/condensate; ≥0,All,Number,,No,No
+Water / المياه,Water Use Intensity (m³/m²),شدة المياه (م³/م²),,,,m³/m²,Auto: Total Water / Floor Area,All,Auto,,No,No
+Water / المياه,Water per Student (m³/student),المياه لكل طالب (م³/طالب),,,,m³/student,Auto: Total Water / Students,All,Auto,,No,No
+Waste / النفايات,Total Waste (tonnes),إجمالي النفايات (طن),,,,,tonnes,All streams; ≥0,All,Number,,No,No
+Waste / النفايات,Waste Recycled/Composted (tonnes),النفايات المُعاد تدويرها/تحويلها إلى سماد (طن),,,,,tonnes,Sum of recycling + composting; ≥0,All,Number,,No,No
+Waste / النفايات,Waste Diversion Rate (%),معدل تحويل النفايات (%),,,,%,Auto: (Recycled/Total)*100; 0–100,All,Auto,,No,No
+Waste / النفايات,Food Waste per Student (kg/student),هدر الطعام لكل طالب (كغ/طالب),,,,kg/student,Optional if kitchen/canteen present; ≥0,Advanced,Number,,No,No
+Waste / النفايات,Single-Use Plastic Policy,سياسة البلاستيك أحادي الاستخدام,,,,,Ban/restrictions in place?,All,Dropdown,[Yes/No | نعم/لا],No,No
+Emissions / الانبعاثات,Scope 1 (tCO₂e),النطاق 1 (طن مكافئ CO₂),,,,,tonnes,Boilers/gensets/refrigerants; ≤3 dp; ≥0,All,Number,,No,No
+Emissions / الانبعاثات,Scope 2 (tCO₂e),النطاق 2 (طن مكافئ CO₂),,,,,tonnes,Grid electricity; ≤3 dp; ≥0,All,Number,,No,No
+Emissions / الانبعاثات,Scope 3 (tCO₂e) – School Fleet & Waste,النطاق 3 (أسطول المدرسة والنفايات),,,,,tonnes,Optional lite S3: buses + outsourced waste; ≤3 dp; ≥0,Advanced,Number,,No,No
+Emissions / الانبعاثات,Scope 2 Method,منهجية النطاق 2,,,,,Provide certificates/grid factor in Evidence if MB/LB,All,Dropdown,[Market-based | قائم على السوق, Location-based | قائم على الموقع],Yes,No
+Emissions / الانبعاثات,Refrigerant Top-up (kg),شحن غاز التبريد (كغ),,,,,kg,Annual top-ups (F-gases) for AC/chillers; ≥0; Evidence Required? (invoice/service sheets),Advanced,Number,,Yes,No
+Emissions / الانبعاثات,Scope 3 Categories Covered (School-lite),فئات النطاق 3 المشمولة (نسخة المدارس المبسطة),,,,,,"Tick/list from: School buses, Outsourced waste, Staff commuting (optional), Purchased paper/food (optional)",Advanced,Text,,No,No
+Environment / البيئة,Baseline Year (Emissions/Targets),سنة خط الأساس (الانبعاثات/الأهداف),,Year,,Base year for trend charts and target math,All,Year,,No,No
+Transport / النقل,% Students Using School Transport,نسبة الطلاب المستخدمين لنقل المدرسة,,,,,%,Share using school buses; 0–100,All,Number,,No,No
+Transport / النقل,School Bus Fuel (L diesel/petrol),وقود حافلات المدرسة (لتر),,,,,L,If known; else leave blank; ≥0,Advanced,Number,,No,No
+Transport / النقل,% Low/Zero-Emission Buses,نسبة الحافلات منخفضة/عديمة الانبعاثات,,,,,%,Electric/CNG/hybrid share; 0–100,Advanced,Number,,No,No
+Transport / النقل,Active Travel Program,برنامج التنقل النشط,,,,,Walking/cycling initiatives exist?,All,Dropdown,[Yes/No | نعم/لا],No,No
+Indoor Environment / البيئة الداخلية,Classroom CO₂ Monitors,أجهزة مراقبة ثاني أكسيد الكربون في الفصول,,,,,Installed in typical classrooms?,Advanced,Dropdown,[Yes/No | نعم/لا],No,No
+Indoor Environment / البيئة الداخلية,Typical CO₂ Level (ppm),مستوى ثاني أكسيد الكربون المعتاد (جزء في المليون),,,,,ppm,Average during occupancy (indicative); ≥0,Advanced,Number,,No,No
+Indoor Environment / البيئة الداخلية,Thermal Comfort Incidents,حوادث عدم الراحة الحرارية,,,,,%,Weeks with comfort complaints (% of term weeks); 0–100,Advanced,Number,,No,No
+Curriculum & Community / المنهج والمجتمع,Green Curriculum Hours (hrs/student/yr),ساعات المنهج الأخضر (ساعة/طالب/سنة),,,,,hours/student/year,ESD/eco-clubs/projects; ≥0,All,Number,,No,No
+Curriculum & Community / المنهج والمجتمع,Community Volunteering (hours),ساعات التطوع المجتمعي,,,,,hours,Staff+students total; ≥0,All,Number,,No,No
+Curriculum & Community / المنهج والمجتمع,Single-Use Plastics Ban Communication,التواصل حول حظر البلاستيك أحادي الاستخدام,,,,,Parents/students informed?,All,Dropdown,[Yes/No | نعم/لا],No,No
+Social / الاجتماعي,Child Protection & Safeguarding Policy,سياسة حماية الطفل والسلامة,,,,,Published & enforced?,All,Dropdown,[Yes/No | نعم/لا],Yes,No
+Social / الاجتماعي,Anti-Bullying Policy,سياسة مكافحة التنمر,,,,,Published & enforced?,All,Dropdown,[Yes/No | نعم/لا],Yes,No
+Social / الاجتماعي,Student Attendance Rate (%),معدل حضور الطلاب (%),,,,,%,Annual average; 0–100,All,Number,,No,No
+Social / الاجتماعي,Teacher Retention Rate (%),معدل الاحتفاظ بالمعلمين (%),,,,,%,Year-over-year; 0–100,All,Number,,No,No
+Social / الاجتماعي,Student-Teacher Ratio,نسبة الطلاب إلى المعلمين,,,,,Ratio,Students per teacher (whole school); ≥0,All,Number,,No,No
+Social / الاجتماعي,SEN Inclusion (% of students),نسبة دمج ذوي الاحتياجات الخاصة,,,,,%,Share of students with SEN supported; 0–100,All,Number,,No,No
+Social / الاجتماعي,OH&S Policy (Staff),سياسة الصحة والسلامة المهنية (الموظفون),,,,,,Exists and communicated?,All,Dropdown,[Yes/No | نعم/لا],No,No
+Social / الاجتماعي,TRIR (per 200,000 hours),معدل الإصابات القابلة للتسجيل (لكل 200,000 ساعة),,,,,per 200,000 hours,For staff; ≥0; ≤1000; Evidence Required? (incident logs),All,Number,,Yes,No
+Social / الاجتماعي,Food/Nutrition Standards,معايير التغذية الغذائية,,,,,Healthy canteen policy?,All,Dropdown,[Yes/No | نعم/لا],No,No
+Governance / الحوكمة,Board/Owner Oversight of ESG,إشراف مجلس الإدارة/المالك على الاستدامة,,,,,Formally assigned?,All,Dropdown,[Yes/No | نعم/لا],No,No
+Governance / الحوكمة,Management Oversight of ESG,الإشراف الإداري على الاستدامة,,,,,Principal/COO designated?,All,Dropdown,[Yes/No | نعم/لا],No,No
+Governance / الحوكمة,Data Privacy Policy (Student Data),سياسة خصوصية البيانات (بيانات الطلاب),,,,,Covers student/guardian data?,All,Dropdown,[Yes/No | نعم/لا],Yes,Yes
+Governance / الحوكمة,Whistleblowing/Grievance Channel,قناة الإبلاغ/الشكاوى,,,,,Public URL or “Internal only”,All,URL,,No,No
+Governance / الحوكمة,Regulatory Inspection Link,رابط تقرير التفتيش التنظيمي,,,,,Link to KHDA/ADEK/MOE rating (if public); Evidence Required?,All,URL,,Yes,No
+Governance / الحوكمة,Board Meeting Attendance (%),حضور اجتماعات المجلس (%),,,,,%,0–100,All,Number,,No,No
+Governance / الحوكمة,Data Protection Contact (DPO/Email),مسؤول حماية البيانات/البريد,,,,,Point of contact for student/guardian data queries (Phase 1.5),All,Text,,No,Yes
+Compliance / الامتثال,Previous Violations (count),عدد المخالفات السابقة,,,,,Count,Last 24 months (safety/environment); non-negative (0–1e9),All,Number,,Yes,No
+Compliance / الامتثال,Estimated Fine (AED),الغرامة التقديرية (درهم),,Auto,,AED,Auto: 50,000*(2^Violations); log in audit trail; decimal precision ≤ 2 (0–1e9); Evidence Required?,All,Auto,Yes,No
+Disclosure / الإفصاح,Sustainability Report Published,نشر تقرير الاستدامة,,,,,Standalone report available?,All,Dropdown,[Yes/No | نعم/لا],No,No
+Disclosure / الإفصاح,Frameworks Used,الأطر المستخدمة,,,,,GRI/IFRS S1-S2/Local guidance (list + year),All,Text,,No,No
+Disclosure / الإفصاح,External Assurance Statement,بيان التأكيد الخارجي,,,,,URL to statement (if any),All,URL,,No,No
+Evidence / الأدلة,Evidence Links (per section),روابط الأدلة (لكل قسم),,,URL,Multi-URL; utility bills, bus fuel, policies; TLS 1.3,All,URL,,Yes,No
+Transport / النقل,Bus Fleet Conversion Plan (Y/N),خطة تحويل أسطول الحافلات (نعم/لا),,,,,Exists with timeline and % milestones? (Phase 1.5),Advanced,Dropdown,[Yes/No | نعم/لا],No,No

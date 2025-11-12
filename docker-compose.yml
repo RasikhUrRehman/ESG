@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  esg-api:
+    build: .
+    container_name: esg-report-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app/app
+      - ./templates:/app/templates
+      - ./uploads:/app/uploads
+      - ./reports:/app/reports
+      - ./.env:/app/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    networks:
+      - esg-network
+
+networks:
+  esg-network:
+    driver: bridge

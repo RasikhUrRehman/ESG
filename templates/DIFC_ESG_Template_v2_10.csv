@@ -1,0 +1,119 @@
+Section / القسم,Field (EN),الحقل (AR),Prev Year,Current,Target,Unit,Notes,Applicability,Input Type,Options,Evidence Required?,Confidential?
+Company / الشركة,AUM Threshold Met (>USD 6B),تجاوز عتبة الأصول (>6 مليار دولار),,,,,,The company shall report if AUM threshold is met (ADGM 399A),ADX/DIFC,Dropdown,[Yes/No | نعم/لا],No,No
+Company / الشركة,Turnover Threshold Met (>USD 68M),تجاوز عتبة الإيرادات (>68 مليون دولار),,,,,,The company shall report if turnover threshold is met (ADGM 399A),ADX/DIFC,Dropdown,[Yes/No | نعم/لا],No,No
+Company / الشركة,Company Name,اسم الشركة,,,,,Required for portal registration,All,Text,,No,No
+Company / الشركة,Trade License Number,رقم الرخصة التجارية,,,,,Portal identifier,All,Text,,No,No
+Company / الشركة,Reporting Year,سنة التقرير,,,,,The company shall report the year (YYYY),All,Year,,No,No
+Governance & MRV,الحوكمة والمراقبة والتحقق والإبلاغ,Reporting Boundary Method,منهجية الحدود التقريرية,,,,,Equity share / Financial control / Operational control (IFRS S2); include consolidation scope note,All,Dropdown,[Equity share | الحصة, Financial control | السيطرة المالية, Operational control | السيطرة التشغيلية],No,No
+Governance & MRV,الحوكمة والمراقبة والتحقق والإبلاغ,Baseline Year (Emissions/Targets),سنة خط الأساس (الانبعاثات/الأهداف),,Year,,Base year for trend charts and target math (IFRS S2),All,Year,,No,No
+Governance & MRV,الحوكمة والمراقبة والتحقق والإبلاغ,Emissions Factor Source,مصدر معامل الانبعاثات,,,,,IPCC/DEFRA/Local grid factor (specify version/date, e.g., DEFRA 2024; IPCC AR6),All,Text,,No,No
+Governance & MRV,الحوكمة والمراقبة والتحقق والإبلاغ,Data Retention ≥5 years,حفظ البيانات لمدة ≥5 سنوات,,,,,Confirm records retention to support MRV (Art. 6),All,Dropdown,[Yes/No | نعم/لا],No,No
+Governance & MRV,الحوكمة والمراقبة والتحقق والإبلاغ,Management Oversight of ESG,الإشراف الإداري على الاستدامة,,,,,Identify if management (not only the Board) formally oversees ESG,All,Dropdown,[Yes/No | نعم/لا],No,No
+Governance & MRV,الحوكمة والمراقبة والتحقق والإبلاغ,Data Owner (Name/Email),مالك البيانات (الاسم/البريد),,,,,Data owner for MRV accountability; validate email (^[^\s@]+@[^\s@]+\.[^\s@]+$)),All,Text,,No,No
+Governance & MRV,الحوكمة والمراقبة والتحقق والإبلاغ,Last Updated (UTC),آخر تحديث (UTC),,,,,Timestamp for data freshness; Format YYYY-MM-DDThh:mm:ssZ,All,Text,,No,No
+Governance & MRV,الحوكمة والمراقبة والتحقق والإبلاغ,Calculation Tool / Version,أداة/إصدار الحساب,,,,,Tool used (e.g., SafiZero Engine vX.Y),All,Text,,No,No
+Governance & MRV,الحوكمة والمراقبة والتحقق والإبلاغ,Scope 2 Method,منهجية النطاق 2,,,,,Market-based | Location-based (IFRS/GHG Protocol); provide evidence if Market-based,All,Dropdown,[Market-based | قائم على السوق, Location-based | قائم على الموقع],Yes,No
+Governance & MRV,Reporting Period Start,بداية فترة التقرير,,,,,YYYY-MM-DD (local),All,Text,,No,No
+Governance & MRV,Reporting Period End,نهاية فترة التقرير,,,,,YYYY-MM-DD (local),All,Text,,No,No
+Governance & MRV,Restatement This Period?,إعادة بيان خلال الفترة؟,,,,,If “Yes”, describe in Notes and attach evidence; log change hash,All,Dropdown,[Yes/No | نعم/لا],Yes,No
+Governance & MRV,Change Log Hash (SHA-256),تجزئة سجل التغييرات (SHA-256),,,,,For audit trail integrity,All,Text,,Yes,Yes
+Governance / الحوكمة,Board Oversight of ESG,إشراف مجلس الإدارة على الاستدامة,,,,,The company shall provide information about its strategy and approach to managing ESG,All,Dropdown,[Yes/No | نعم/لا],No,No
+Governance / الحوكمة,Independent Directors (%),نسبة الأعضاء المستقلين,,,,,%,The company shall disclose the percentage and count of independent directors; 0–100,All,Number,,No,No
+Governance / الحوكمة,CEO Prohibited from Board Chair,حظر الرئيس التنفيذي من رئاسة المجلس,,,,,The company shall disclose if CEO is prohibited from serving as board chair (Yes/No),All,Dropdown,[Yes/No | نعم/لا],No,No
+Governance / الحوكمة,CEO Pay Ratio,نسبة راتب الرئيس التنفيذي,,,Ratio,The company shall disclose CEO pay ratio with a detailed formula or standard for calculation; 0–1000,ADX/DIFC,Number,,Yes,No
+Governance / الحوكمة,Board Diversity (%),تفصيل تنوع الجنس في المجلس,,,,,%,The company shall distinguish gender diversity ratios at board level; 0–100,All,Number,,No,No
+Governance / الحوكمة,Committee Chair Diversity (%),تنوع رؤساء اللجان,,,,,%,The company shall disclose the percentage of committee chairs by gender; 0–100,All,Number,,No,No
+Governance / الحوكمة,Board Meeting Attendance (%),حضور اجتماعات المجلس (%),,,,,%,The company shall report attendance rate of board members at meetings; 0–100,All,Number,,No,No
+Governance / الحوكمة,Materiality Analysis,تحليل الأهمية,,,,,The company shall report content addressing all materially significant topics identified,All,Text,,No,No
+Governance / الحوكمة,Accuracy and Data Quality,دقة البيانات ونوعيتها,,,,,The company shall use rigorous data collection systems to ensure accuracy,All,Text,,No,No
+Governance / الحوكمة,Supplier Code of Conduct Compliance Required,الالتزام بمدونة السلوك للموردين,,,,,The company shall disclose if vendors/suppliers are required to follow a Code of Conduct,All,Dropdown,[Yes/No | نعم/لا],No,No
+Governance / الحوكمة,Supplier Certified Compliance (%),نسبة الموردين المعتمدين,,,,,%,The company shall disclose the percentage of suppliers formally certified for compliance; 0–100,All,Number,,No,No
+Governance / الحوكمة,Ethics/Prevention of Corruption Compliance Required,الالتزام بسياسة الأخلاق/منع الفساد,,,,,The company shall disclose if it follows an Ethics and/or Prevention of Corruption policy,All,Dropdown,[Yes/No | نعم/لا],No,No
+Governance / الحوكمة,Ethics Compliance Workforce (%),نسبة الالتزام بالأخلاق للعاملين,,,,,%,The company shall disclose the percentage of workforce certified for ethics compliance; 0–100,All,Number,,No,No
+Governance / الحوكمة,Anti-Bribery & Corruption Training (%),تدريب مكافحة الرشوة والفساد (%),,,,,%,The company shall disclose percentage of workforce trained on anti-bribery policies; 0–100,All,Number,,No,No
+Governance / الحوكمة,DIFC Data Protection Compliance,الامتثال لقانون حماية البيانات في مركز دبي المالي العالمي,,,,,Law No. 5 of 2020 compliance (Y/N),DIFC,Dropdown,[Yes/No | نعم/لا],No,No
+Governance / الحوكمة,Data Protection Officer / Email,مسؤول حماية البيانات / البريد,,,,,Contact for data subjects (confidential),DIFC,Text,,No,Yes
+Governance / الحوكمة,Whistleblowing / Grievance Channel,قناة الإبلاغ / الشكاوى,,,,,Public URL or “Internal only”,All,URL,,No,No
+Finance / التمويل,Green Loan Eligibility,أهلية القرض الأخضر,,,,,The company shall disclose green loan eligibility based on UAE green finance criteria,ADX/DIFC,Dropdown,[Yes/No | نعم/لا],No,No
+Finance / التمويل,Green Sukuk Issued (AED),السكوك الخضراء المصدرة (درهم),,,AED,The company shall disclose green sukuk issued amount; non-negative (0–1e9),ADX/DIFC,Number,,No,No
+Finance / التمويل,Green Sukuk Outstanding (AED),السكوك الخضراء المتبقية (درهم),,,AED,The company shall disclose green sukuk outstanding amount; non-negative (0–1e9),ADX/DIFC,Number,,No,No
+Finance / التمويل,Shari’a Compliance (Certification),شهادة التوافق الشرعي,,,,,Upload reference for Shari’a compliance certification,ADX/DIFC,Dropdown,[Yes/No | نعم/لا],No,No
+Finance / التمويل,Financed Emissions (tCO₂e, PCAF),الانبعاثات الممولة (طن مكافئ CO₂، PCAF),,,Number,tonnes,Scope 3 Cat. 15 (FIs); method & data quality in Notes; decimal precision ≤ 3 (0–1e9),FI,Number,,No,No
+Finance / التمويل,Financed Emissions Coverage (% AUM),نسبة التغطية من الأصول المدارة,,,,,%,Portion of AUM included; 0–100,FI,Number,,No,No
+Finance / التمويل,Emissions Intensity (tCO₂e per USD m AUM),شدة الانبعاثات (طن مكافئ CO₂ لكل مليون دولار من الأصول),,,Number,tCO₂e/USD m,For comparability across funds; decimal precision ≤ 3 (0–1e9),FI,Number,,No,No
+Finance / التمويل,ESG-Labelled AUM (%),نسبة الأصول المصنّفة ESG,,,,,%,Green/social/sustainability-labelled share; 0–100,FI,Number,,No,No
+Finance / التمويل,Stewardship & Voting Policy Link,رابط سياسة الحوكمة النشطة والتصويت,,,,,URL to policy,FI,URL,,No,No
+Finance / التمويل,% Meetings Voted / % ESG Proposals Supported,نسبة الاجتماعات المصوّت فيها / نسبة دعم مقترحات ESG,,,,,%,Disclose both; 0–100,FI,Number,,No,No
+Finance / التمويل,Use-of-Proceeds Allocation (%),تخصيص عائدات الإصدار (%),,,,,%,Allocated across categories; 0–100; warn if ≠100,Instruments,Number,,Yes,No
+Finance / التمويل,Unallocated Proceeds (AED) & Placement,العائدات غير المخصّصة (درهم) ومكان الإيداع,,Number,AED,,Held in cash/MM/green deposits; non-neg.; non-negative (0–1e9),Instruments,Number,,Yes,No
+Finance / التمويل,Post-Issuance Impact KPIs,مؤشرات الأثر بعد الإصدار,,,,,List KPIs (e.g., MWh RE generated, tCO₂e avoided) + Assurance (Y/N),Instruments,Text,,Yes,No
+Carbon / الكربون,NRCC Registration Status,حالة التسجيل في السجل الوطني,,,,,The company shall report NRCC registration status (Cabinet 67/2024),All,Dropdown,[Yes/No | نعم/لا],No,No
+Carbon / الكربون,NRCC Account Status,حالة حساب السجل الوطني,,,,,Registered | Pending | Not registered (Cabinet 67/2024),All,Dropdown,[Registered | مسجّل, Pending | قيد الإجراء, Not registered | غير مسجّل],No,No
+Carbon / الكربون,Credits Programme/Vintage,برنامج/سنة الاعتماد,,,,,If claiming credits: programme (e.g., VCM) & vintage year,Advanced,Text,,No,No
+Carbon / الكربون,Credits Status,حالة الأرصدة,,,,,Issued | Purchased | Retired | Planned,Advanced,Dropdown,[Issued | صادر, Purchased | مشترى, Retired | متقاعد, Planned | مخطط],No,No
+Carbon / الكربون,Claim Type,نوع المطالبة,,,,,Offset | Inset | Attribute-only,Advanced,Dropdown,[Offset | تعويض, Inset | إدراج, Attribute-only | صفة فقط],No,No
+Carbon / الكربون,Estimated Carbon Credits (tCO₂e),الأرصدة الكربونية التقديرية (طن مكافئ ثاني أكسيد الكربون),,,Number,tonnes,Optional: Auto from emissions reduction; ties to NRCC (pilot ROI); decimal precision ≤ 3 (0–1e9),Advanced,Number,,No,No
+Carbon / الكربون,Carbon Credit Price (AED/tCO₂e),سعر رصيد الكربون (درهم/طن مكافئ ثاني أكسيد الكربون),,,Number,AED/tCO₂e,The company shall report carbon credit price (market-linked placeholder); non-negative (0–1e9),Advanced,Number,,No,No
+Carbon / الكربون,Monthly ROI Estimate (AED),العائد الشهري المقدر (درهم),,Auto,,AED,Optional: Monthly ROI from credits (Auto: Credits * Price / 12); decimal precision ≤ 2 (0–1e9) (Phase 1.5),Advanced,Auto,,No,No
+Carbon / الكربون,Carbon Project Feasibility Study,دراسة جدوى مشروع الكربون,,,,,The company shall disclose carbon project feasibility (Article 10.2),All,Dropdown,[Yes/No | نعم/لا],No,No
+Strategy / الاستراتيجية,Double Materiality Assessment,تقييم الأهمية المالية والبيئية/الاجتماعية,,,,,The company shall report assessment of financial + environmental/social materiality (IFRS S1),All,Dropdown,[Yes/No | نعم/لا],No,No
+Strategy / الاستراتيجية,Climate Scenario Analysis,تحليل السيناريوهات المناخية المستقبلية,,,,,The company shall report forward-looking scenarios (e.g., +2°C, +4°C pathways) (IFRS S2),All,Dropdown,[Yes/No | نعم/لا],No,No
+Strategy / الاستراتيجية,Net Zero 2045 Commitment,التزام صافي 2045,,,,,The company shall report Net Zero 2045 commitment (DIFC),All,Dropdown,[Yes/No | نعم/لا],No,No
+Strategy / الاستراتيجية,ESG Targets,أهداف الاستدامة,,,,,The company shall report specific ESG targets,All,Text,,No,No
+Strategy / الاستراتيجية,Target Year,السنة المستهدفة,,,,Year,The company shall report associated timelines for achieving ESG targets,All,Year,,No,No
+Strategy / الاستراتيجية,Current Reduction Measures,تدابير التخفيض الحالية,,,,,What measures has the company taken this year to reduce emissions/energy/water? (Article 7),All,Text,,No,No
+Strategy / الاستراتيجية,Planned Reduction Measures,تدابير التخفيض المخططة,,,,,The company shall disclose planned reduction measures (Article 6),All,Text,,No,No
+Strategy / الاستراتيجية,Adaptation Plans,خطط التكيف,,,,,The company shall disclose adaptation plans (Article 8),All,Text,,No,No
+Strategy / الاستراتيجية,Climate-Risk Assessment Scope,نطاق تقييم مخاطر المناخ,,,,,Sites/sectors covered; frequency of update (Art. 8),All,Text,,No,No
+Strategy / الاستراتيجية,Adaptation Spend (AED),الإنفاق على التكيف (درهم),,,Number,AED,Annual spend on resilience measures (IFRS S2); non-negative (0–1e9),All,Number,,No,No
+Strategy / الاستراتيجية,Scenario Parameters & Sources,معلمات السيناريو والمصادر,,,,,E.g., pathways (+1.5/+2/+4°C), NGFS version; time horizons S/M/L,All,Text,,No,No
+Strategy / الاستراتيجية,Climate-Risk Coverage (% sites/assets),نسبة التغطية في تقييم مخاطر المناخ,,,,,%,Share of operations/assets included; 0–100,All,Number,,No,No
+Environment / البيئة,Environmental Strategy and Management,استراتيجية وبيئية الإدارة,,,,,The company shall include strategy and management approach with performance targets,All,Text,,No,No
+Environment / البيئة,Environmental KPIs and Quantitative Data,مؤشرات الأداء البيئي والبيانات الكمية,,,,tCO₂e | %, AED,The company shall provide quantitative data substantiating impact and performance,All,Number/Text,,No,No
+Environment / البيئة,Output Metric Name,اسم مقياس المخرجات,,,,,e.g., tonnes produced, m² floor area, revenue AED, units sold (denominator for intensities),All,Text,,No,No
+Environment / البيئة,Output Quantity,كمية المخرجات,,,,,Numeric value for output metric (required for intensity calcs); non-negative (0–1e9); block save if null when Intensity auto present,All,Number,,No,No
+Environment / البيئة,Scope 1 (tCO₂e),النطاق 1 (طن مكافئ CO₂),,,Number,tonnes,The company shall report Scope 1 greenhouse gas emissions in CO₂ equivalents; decimal precision ≤ 3 (0–1e9),All,Number,,No,No
+Environment / البيئة,Scope 2 (tCO₂e),النطاق 2 (طن مكافئ CO₂),,,Number,tonnes,The company shall report Scope 2 greenhouse gas emissions in CO₂ equivalents; decimal precision ≤ 3 (0–1e9),All,Number,,No,No
+Environment / البيئة,Scope 3 (tCO₂e),النطاق 3 (طن مكافئ CO₂),,,Number,tonnes,The company shall report Scope 3 greenhouse gas emissions in CO₂ equivalents (if applicable); decimal precision ≤ 3 (0–1e9),Advanced,Number,,No,No
+Environment / البيئة,Scope 3 Categories Covered,فئات النطاق 3 المشمولة,,,,,List categories included (e.g., purchased goods, transport, waste); state screening method and coverage % of total S3,Advanced,Text,,No,No
+Environment / البيئة,Total Energy Consumption (kWh),إجمالي استهلاك الطاقة (كيلوواط ساعة),,,Number,kWh,The company shall report total energy consumption; non-negative (0–1e9),All,Number,,No,No
+Environment / البيئة,Renewable Energy Share (%),نسبة الطاقة المتجددة (%),,,,%,The company shall disclose renewable energy share; 0–100,All,Number,,No,No
+Environment / البيئة,Energy Intensity,شدة الطاقة,Auto,kWh/unit output,Energy consumption normalized by output (Auto: Total Energy / Output Quantity); Validation: Output Quantity required; must be > 0,All,Auto,,No,No
+Environment / البيئة,Water Consumed (m³),المياه المستهلكة (م³),,,Number,m³,The company shall disclose the total volume of water consumed; non-negative (0–1e9),All,Number,,No,No
+Environment / البيئة,Water Recycled (m³),المياه المعاد تدويرها (م³),,,Number,m³,The company shall disclose the total volume of water reclaimed and recycled; non-negative (0–1e9),All,Number,,No,No
+Environment / البيئة,Water Intensity,شدة المياه,Auto,m³/unit output,Water consumption normalized by output (Auto: Total Water / Output Quantity); Validation: Output Quantity required; must be > 0,All,Auto,,No,No
+Environment / البيئة,Waste Generated (tonnes),النفايات المنتجة (طن),,,Number,tonnes,The company shall disclose the total quantity of waste generated; non-negative (0–1e9),All,Number,,No,No
+Environment / البيئة,Waste Recycled (tonnes),النفايات المعاد تدويرها (طن),,,Number,tonnes,The company shall disclose the percentage of waste recycled; non-negative (0–1e9),All,Number,,No,No
+Environment / البيئة,Recycling Rate (%),معدل إعادة التدوير (%),Auto,%,Formula: (Recycled Waste / Generated Waste) * 100 - Auto-calc; 0–100,All,Auto,,No,No
+Environment / البيئة,Waste Intensity,شدة النفايات,Auto,tonnes/unit output,Waste generated normalized by output (Auto: Total Waste / Output Quantity); Validation: Output Quantity required; must be > 0,All,Auto,,No,No
+Environment / البيئة,Climate-related Investment (AED),الاستثمار المتعلق بالمناخ (درهم),,,Number,AED,Annual spend on decarbonisation/resilience/R&D (IFRS S2); non-negative (0–1e9) (Phase 1.5),All,Number,,No,No
+Environment / البيئة,Grid Emission Factor,معامل انبعاثات الشبكة,,,Number,kgCO₂e/kWh,Source/version (e.g., DEFRA 2024, EWEC 2024),All,Number,,No,No
+Environment / البيئة,Residual Mix Source (MB Scope 2),مصدر المزيج المتبقي (للنطاق 2 القائم على السوق),,,,,If MB selected: cite country/residual-mix DB & version; required if Scope 2 Method = Market-based,All,Text,,Yes,No
+Environment / البيئة,REC/EAC Evidence IDs,معرّفات شهادات الطاقة المتجددة,,,,,Certificate/provider IDs for renewable claims (if any); required if Scope 2 Method = Market-based,All,Text,,Yes,No
+Social / الاجتماعي,Social and Environmental Risks,المخاطر الاجتماعية والبيئية,,,,,The company shall include social and environmental risks (mining/petroleum),All,Text,,No,No
+Social / الاجتماعي,Gender Pay Gap (%),فجوة الأجور بين الجنسين (%),,,,%,The company shall disclose the gender pay gap as a percentage difference; 0–100,All,Number,,No,No
+Social / الاجتماعي,Total Workforce Diversity (%),تنوع القوى العاملة الكلية (%),,,,%,The company shall report percentage of workforce diversity by nationality/ethnicity; 0–100,All,Number,,No,No
+Social / الاجتماعي,Occupational Health & Safety Incident Rate,معدل الحوادث الصحية والسلامة المهنية,,,Number,Rate,The company shall disclose total recordable injury rate or lost-time injury rate; 0–1000 per 200k hours,All,Number,,No,No
+Social / الاجتماعي,Workforce Diversity (%),تنوع القوى العاملة (%),,,,%,The company shall disclose workforce diversity, including gender diversity; 0–100,All,Number,,No,No
+Social / الاجتماعي,Minority Representation,تمثيل الأقليات,,,,,The company shall disclose minority groups representation,All,Text,,No,No
+Social / الاجتماعي,Human Rights Policy,سياسة حقوق الإنسان,,,,,The company shall disclose if it follows a Human Rights Policy (Yes/No),All,Dropdown,[Yes/No | نعم/لا],No,No
+Social / الاجتماعي,Anti-Bribery/Corruption & Ethics Policy,سياسة مكافحة الرشوة/الفساد والأخلاق,,,,,The company shall disclose if it follows an Anti-Bribery/Corruption & Ethics Policy (Yes/No),All,Dropdown,[Yes/No | نعم/لا],No,No
+Social / الاجتماعي,Gender Diversity of Workforce (%),نسبة تنوع الجنس في القوى العاملة,,,,,%,The company shall disclose the percentage of female employees relative to total workforce; 0–100,All,Number,,No,No
+Social / الاجتماعي,Employee Training Hours (per employee),ساعات تدريب الموظفين (لكل موظف),,,hours/employee,The company shall disclose average annual training hours provided per employee; non-negative (0–1e9),All,Number,,No,No
+Social / الاجتماعي,Community Investment (% of revenue),الاستثمار المجتمعي (% من الإيرادات),,,,%,The company shall disclose the amount invested in the community as a percentage of company revenues; 0–100,All,Number,,No,No
+Social / الاجتماعي,Modern Slavery & HRDD Statement,بيان العبودية الحديثة والعناية الواجبة لحقوق الإنسان,,,,,Policy/statement link; scope and frequency,All,URL,,No,No
+Social / الاجتماعي,Supplier Audits Coverage (%),نسبة تغطية تدقيق الموردين,,,,,%,Vetted suppliers for HR/ESG; 0–100,All,Number,,No,No
+Social / الاجتماعي,Workforce Turnover Rate (%),معدل دوران الموظفين,,,,,%,Annual turnover; 0–100,All,Number,,No,No
+Compliance & Penalties / الامتثال والعقوبات,Violation Severity (1-5),شدة المخالفة (1-5),,,Index,The company shall report violation severity on a scale 1-5 (1=minor, 5=major); 0–5,All,Number,,No,No
+Compliance & Penalties / الامتثال والعقوبات,Previous Violations (count),عدد المخالفات السابقة,,,,Count,The company shall report previous violations count (last 24 months); non-negative (0–1e9),All,Number,,No,No
+Compliance & Penalties / الامتثال والعقوبات,Estimated Fine (AED),الغرامة التقديرية (درهم),,Auto,,AED,Auto-calculated: 50,000 * (2 ^ Violations) - Art. 16; supports audit log; decimal precision ≤ 2 (0–1e9),All,Auto,,No,No
+Compliance & Penalties / الامتثال والعقوبات,Penalty Class,تصنيف الغرامة,,,,,Administrative | Environmental (context for Article 16),All,Dropdown,[Administrative | إدارية, Environmental | بيئية],No,No
+Compliance & Penalties / الامتثال والعقوبات,Remediation Plan (if non-compliant),خطة المعالجة (في حال عدم الامتثال),,,,,Outline actions, owners, dates; link evidence,All,Text,,Yes,No
+Disclosure / الإفصاح,SDG Mapping,ربط أهداف التنمية المستدامة,,,,,The company shall report SDG mapping,All,Dropdown,[Yes/No | نعم/لا],No,No
+Disclosure / الإفصاح,External Assurance Statement,بيان التأكيد الخارجي,,,,URL,Link to external assurance/verification statement (if any),All,URL,,No,No
+Disclosure / الإفصاح,Assurance/Verification Provider,مزود الضمان/التحقق,,,,,Name + accreditation (ISO 14065) and scope (S1/S2/S3),All,Text,,No,No
+Disclosure / الإفصاح,Assurance Level,مستوى الضمان,,,,,Limited | Reasonable,All,Dropdown,[Limited | محدود, Reasonable | معقول],No,No
+Disclosure / الإفصاح,Frameworks Used,الأطر المستخدمة,,,,,GRI / SASB / IFRS S2 / CDP (list + year/version, e.g., IFRS S2:2023),All,Text,,No,No
+Disclosure / الإفصاح,Sustainability Report Published,نشر تقرير الاستدامة,,,,,Standalone report available (add link in Evidence),All,Dropdown,[Yes/No | نعم/لا],No,No
+Disclosure / الإفصاح,Evidence Links (per section),روابط الأدلة (لكل قسم),,,URL,Multi-URL to evidence vault; include factor tables, invoices, utility data; TLS 1.3,All,URL,,Yes,No
+Evidence Upload References / مراجع تحميل الأدلة,Evidence Links (per section),روابط الأدلة (لكل قسم),,,URL,Multi-URL links to Evidence Vault; supports TLS 1.3 secure hyperlinks in PDFs,All,URL,,Yes,No
