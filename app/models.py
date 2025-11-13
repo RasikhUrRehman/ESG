@@ -60,6 +60,7 @@ class UploadResponse(BaseModel):
     template_used: str
     match_result: ColumnMatchResult
     message: str
+    uploaded_columns: List[str] = Field(description="List of all columns in the uploaded file")
 
 
 class ExtractionResponse(BaseModel):

@@ -163,12 +163,32 @@ async def upload_file(
         
         logger.info(f"File uploaded and processed: {file_id}")
         
+        # Determine appropriate message based on match result
+        if match_result.has_ambiguity:
+            missing_count = len(match_result.unmatched_template)
+            extra_count = len(match_result.unmatched_uploaded)
+            
+            if missing_count > 0 and extra_count > 0:
+                message = f"File uploaded with column mismatches: {missing_count} missing, {extra_count} extra columns"
+            elif missing_count > 0:
+                message = f"File uploaded with {missing_count} missing column(s)"
+            elif extra_count > 0:
+                message = f"File uploaded with {extra_count} extra column(s)"
+            else:
+                message = "File uploaded with column mismatches detected"
+        else:
+            message = "File uploaded and columns matched successfully"
+        
+        # Get all columns from the uploaded file (matched + unmatched)
+        all_uploaded_columns = sorted(list(set(match_result.matched_columns + match_result.unmatched_uploaded)))
+        
         return UploadResponse(
             file_id=file_id,
             filename=file.filename,
             template_used=template,
             match_result=match_result,
-            message="File uploaded and columns matched successfully"
+            message=message,
+            uploaded_columns=all_uploaded_columns
         )
         
     except HTTPException:

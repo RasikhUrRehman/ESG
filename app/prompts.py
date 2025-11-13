@@ -6,71 +6,126 @@ Prompts for different types of ESG reports using Grok AI
 SYSTEM_PROMPT = """You are an expert ESG (Environmental, Social, and Governance) analyst and report writer. 
 Your role is to generate comprehensive, professional, and data-driven ESG reports based on the provided data.
 You should follow international standards like GRI, SASB, TCFD, and IFRS S1/S2 where applicable.
-Always maintain a professional tone and ensure accuracy in data interpretation."""
+Always maintain a professional tone and ensure accuracy in data interpretation.
+
+IMPORTANT FORMATTING RULES:
+1. Use "tCO2e" (not tCO₂e) for carbon emissions - write it as: tCO2e
+2. Use "CO2e" for carbon dioxide equivalent
+3. For tables, use proper markdown table formatting with pipes (|) and hyphens (-)
+4. Do NOT include generic company introductions or placeholder text
+5. Do NOT write things like "[Company Name]", "[Insert data]", or "[Field Name]"
+6. Only report on ACTUAL data provided - do not make assumptions or add placeholders
+7. If data is not available for a section, skip that section entirely
+8. Do NOT add "Suggested Visualizations" or chart descriptions - charts will be added automatically
+9. Do NOT add placeholder recommendations like "once data is provided" - only give specific recommendations based on actual data
+10. Use **bold** for emphasis on section labels like **Environmental:** or **Social:**
+
+TABLE FORMATTING RULES:
+- ALWAYS include tables when data exists - tables are required for reporting
+- Only remove a column if it is COMPLETELY EMPTY for ALL rows (e.g., every single row shows "Not Available" or empty)
+- If a column has values for even ONE row, KEEP that column in the table
+- Use the exact column names from the data (e.g., "Prev Year", "Current", "Target", "Response")
+- Example of column to REMOVE: Target column where ALL rows = "Not Available"
+- Example of column to KEEP: Target column where SOME rows have values and some are "Not Available"
+- Standard table format: | Metric | Current Value | Unit | Target |
+- If all metrics have data in all columns, use all columns
+- Tables MUST be included - do not skip the table section"""
 
 
 # Comprehensive ESG Report Prompt
 COMPREHENSIVE_REPORT_PROMPT = """
-Generate a comprehensive ESG report based on the following data:
+Generate a comprehensive ESG report based ONLY on the actual data provided below. Do NOT add placeholders, generic introductions, or fictional company information.
 
 {data}
 
-The report should include:
+STRICT REQUIREMENTS:
+- ALWAYS include tables for each section where data exists
+- Only report on metrics that have actual data values in at least one column
+- Do NOT skip sections if there is any data available
+- Only remove columns that are 100% empty across all rows
+- Use proper markdown table formatting with aligned columns
+- Write "tCO2e" for carbon emissions (not symbols)
+- Do NOT include any text like "[Company Name]", "[Insert X]", or "[Field]"
+- Do NOT add a company introduction section
+- Start directly with the Executive Summary of ACTUAL performance data
+- Charts will be added automatically - do not describe them in text
 
-1. EXECUTIVE SUMMARY
-   - Overview of ESG performance
-   - Key highlights and achievements
-   - Areas of concern or improvement needed
+The report should include ONLY THE FOLLOWING SECTIONS WHERE DATA EXISTS:
 
-2. ENVIRONMENTAL PERFORMANCE
-   - Greenhouse Gas Emissions (Scope 1, 2, and 3)
-   - Energy consumption and renewable energy usage
-   - Water management and conservation
-   - Waste management and recycling
-   - Climate-related investments and initiatives
-   - Analysis of trends (comparison with previous year and targets)
+## Executive Summary
+Provide a brief overview of the actual ESG performance based on the data provided. Include only key highlights that have real numbers.
 
-3. SOCIAL PERFORMANCE
-   - Employee diversity and inclusion metrics
-   - Health and safety performance
-   - Employee turnover and retention
-   - Gender pay equity
-   - Community investment and engagement
-   - Human rights and non-discrimination policies
+## Key Highlights and Achievements
+List specific achievements with actual metrics from the data. Include this section if there is any reportable data.
 
-4. GOVERNANCE STRUCTURE
-   - Board composition and independence
-   - ESG oversight mechanisms
-   - Executive compensation and ESG linkages
-   - Risk management processes
-   - Data privacy and whistleblowing mechanisms
+**Environmental:**
+- Report actual emissions data in format: "Achieved X tCO2e in Scope 1 emissions, Y tCO2e in Scope 2, and Z tCO2e in Scope 3"
+- Only include metrics that have actual values (not "Not Available")
+- If no environmental data exists, skip this subsection
 
-5. STRATEGY AND TARGETS
-   - ESG materiality assessment
-   - Climate scenario analysis
-   - Net Zero 2050 alignment
-   - Specific targets and timelines
-   - Progress towards goals
+**Social:**
+- Report actual diversity percentages, turnover rates, safety metrics
+- Format: "Maintained a workforce diversity rate of X% and a gender pay gap of Y%"
+- Only include metrics with actual values
+- If no social data exists, skip this subsection
 
-6. COMPLIANCE AND DISCLOSURE
-   - Regulatory compliance status
-   - Sustainability reporting frameworks used
-   - External assurance and verification
-   - SDG alignment
+**Governance:**
+- Report actual board composition and independence percentages
+- Only if data is available
+- If no governance data exists, skip this subsection
 
-7. KEY PERFORMANCE INDICATORS (KPIs)
-   - Summary table of all major metrics
-   - Year-over-year comparisons
-   - Progress towards targets
+## Environmental Performance
+REQUIRED: Create a properly formatted table with actual data. Include this section if ANY environmental data exists.
 
-8. RECOMMENDATIONS
-   - Strategic recommendations for improvement
-   - Priority areas for action
-   - Best practice suggestions
+Table format - only exclude a column if it's 100% empty for all rows:
+| Metric | Current Value | Unit | Target |
+|--------|--------------|------|--------|
+| [List all metrics with at least one value] |
 
-Format the report professionally with clear sections, subsections, and data tables where appropriate.
-Use markdown formatting for structure.
-"""
+Rules for columns:
+- If "Target" has values for ANY metric, include the Target column
+- If "Target" is empty for ALL metrics, exclude the Target column
+- Same logic applies to "Prev Year", "Current", etc.
+
+After the table, provide analysis only on metrics with actual values.
+
+## Social Performance
+REQUIRED: Create a properly formatted table with actual data. Include this section if ANY social data exists.
+
+Follow same column rules as Environmental Performance.
+
+## Governance Structure
+REQUIRED: Create a properly formatted table with actual data. Include this section if ANY governance data exists.
+
+Follow same column rules as Environmental Performance.
+
+## Regulatory Compliance Status
+REQUIRED: Create a properly formatted table with actual compliance data. Include this section if ANY compliance data exists.
+
+## Sustainability Reporting Frameworks Used
+Only list frameworks if explicitly mentioned in the data.
+
+## Recommendations
+Provide specific, data-driven recommendations based on the actual metrics. Use this format:
+
+**Environmental:** [Specific recommendation based on actual environmental data]
+**Social:** [Specific recommendation based on actual social data]
+**Governance:** [Specific recommendation based on actual governance data]
+
+Do NOT add:
+- Generic recommendations without data
+- Phrases like "once data is provided"
+- Placeholder text
+- Chart or visualization suggestions (charts are added automatically)
+
+If you cannot provide specific recommendations due to lack of data, skip this section entirely.
+
+REMEMBER: 
+- Use "tCO2e" not special characters
+- Format all tables properly with markdown
+- Use **bold** for labels like **Environmental:** and **Social:**
+- Do NOT add any chart descriptions or visualization suggestions
+- Only include content where actual data exists"""
 
 
 # Environmental Focus Report Prompt
