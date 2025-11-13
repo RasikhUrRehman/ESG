@@ -16,7 +16,7 @@ from .models import (
     ReportFormat, TemplateType, ColumnMatchResult,
     UploadResponse, ExtractionResponse, ReportResponse, ReportRequest
 )
-from .column_matcher import ColumnMatcher, get_data_summary, format_data_for_report
+from .column_matcher import ColumnMatcher, get_data_summary, format_data_for_report, calculate_change_analysis
 from .report_generator import ReportGenerator
 from .utils import (
     generate_unique_id, is_allowed_file, save_uploaded_file,
@@ -104,7 +104,7 @@ async def upload_file(
     template: str = Form(...)
 ):
     """
-    Upload a file and match columns with selected template
+    Upload a file and clean columns using Grok AI to match selected template
     
     Args:
         file: Uploaded CSV/Excel file
@@ -147,8 +147,8 @@ async def upload_file(
         # Initialize column matcher
         matcher = ColumnMatcher(template)
         
-        # Process file: match columns and extract data
-        match_result, extracted_data = matcher.process_file(file_path)
+        # Process file: clean with Grok and extract data
+        match_result, extracted_data = await matcher.process_file(file_path)
         
         # Store file metadata and extracted data
         file_storage[file_id] = {
@@ -161,7 +161,7 @@ async def upload_file(
         
         extraction_storage[file_id] = extracted_data
         
-        logger.info(f"File uploaded and processed: {file_id}")
+        logger.info(f"File uploaded and processed with Grok: {file_id}")
         
         # Determine appropriate message based on match result
         if match_result.has_ambiguity:
@@ -169,17 +169,17 @@ async def upload_file(
             extra_count = len(match_result.unmatched_uploaded)
             
             if missing_count > 0 and extra_count > 0:
-                message = f"File uploaded with column mismatches: {missing_count} missing, {extra_count} extra columns"
+                message = f"File cleaned by AI: {missing_count} missing columns, {extra_count} extra columns preserved"
             elif missing_count > 0:
-                message = f"File uploaded with {missing_count} missing column(s)"
+                message = f"File cleaned by AI with {missing_count} missing column(s)"
             elif extra_count > 0:
-                message = f"File uploaded with {extra_count} extra column(s)"
+                message = f"File cleaned by AI with {extra_count} extra column(s) preserved"
             else:
-                message = "File uploaded with column mismatches detected"
+                message = "File cleaned and standardized by AI"
         else:
-            message = "File uploaded and columns matched successfully"
+            message = "File cleaned and columns perfectly matched by AI"
         
-        # Get all columns from the uploaded file (matched + unmatched)
+        # Get all columns from the cleaned file (matched + unmatched)
         all_uploaded_columns = sorted(list(set(match_result.matched_columns + match_result.unmatched_uploaded)))
         
         return UploadResponse(
@@ -210,23 +210,27 @@ async def get_file_info(file_id: str):
 @app.get("/extract/{file_id}", response_model=ExtractionResponse)
 async def extract_data(file_id: str):
     """
-    Extract required columns from uploaded file
+    Extract required columns from uploaded file with change analysis
     
     Args:
         file_id: ID of the uploaded file
         
     Returns:
-        ExtractionResponse with extracted data
+        ExtractionResponse with extracted data and change analysis
     """
     if file_id not in extraction_storage:
         raise HTTPException(status_code=404, detail="File not found or not processed")
     
     extracted_data = extraction_storage[file_id]
     
+    # Calculate change analysis
+    analyzed_data = calculate_change_analysis(extracted_data)
+    
     return ExtractionResponse(
         file_id=file_id,
         data=extracted_data,
-        total_records=len(extracted_data)
+        total_records=len(extracted_data),
+        analyzed_data=analyzed_data
     )
 
 

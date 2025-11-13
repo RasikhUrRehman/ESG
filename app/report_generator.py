@@ -535,6 +535,31 @@ class PDFReportGenerator:
         text = re.sub(r'\*(.+?)\*', r'<i>\1</i>', text)
         return text
     
+    def _clean_text_for_pdf(self, text: str) -> str:
+        """Clean text to remove characters that can't be rendered in PDF"""
+        import re
+        # Remove or replace problematic Unicode characters
+        # Replace common problematic characters
+        replacements = {
+            '■': '',  # Black square
+            '□': '',  # White square
+            '▪': '-',  # Small black square
+            '▫': '-',  # Small white square
+            '●': '*',  # Bullet
+            '○': '*',  # White bullet
+            '\u2022': '*',  # Bullet point
+            '\u25a0': '',  # Black square
+            '\u25a1': '',  # White square
+        }
+        
+        for old, new in replacements.items():
+            text = text.replace(old, new)
+        
+        # Remove any remaining control characters except common whitespace
+        text = ''.join(char for char in text if char.isprintable() or char in '\n\r\t')
+        
+        return text
+    
     def generate(
         self, 
         content: str, 
@@ -581,46 +606,70 @@ class PDFReportGenerator:
                 continue
             
             # Check if this is a markdown table
+    # Get base style for paragraph wrapping (needed for Fix 2)
+            # Place this outside the loop, perhaps at the start of your method
+            styles = getSampleStyleSheet()
+            body_style = styles['Normal'] 
+            
+            # ... [your existing loop to find the start of a table] ...
+            
             if '|' in line and i + 1 < len(lines) and '|' in lines[i + 1]:
                 # Parse markdown table
                 table_lines = [line]
                 i += 1
-                
                 # Get all table rows
                 while i < len(lines) and '|' in lines[i]:
                     table_lines.append(lines[i].strip())
                     i += 1
                 
-                # Convert to ReportLab table
+                # Convert to ReportLabx table
                 table_data = []
                 for row in table_lines:
-                    if '---' in row or '|-' in row:  # Skip separator line
+                    if '---' in row or '|-' in row: # Skip separator line
                         continue
-                    cells = [cell.strip() for cell in row.split('|')]
-                    cells = [c for c in cells if c]  # Remove empty cells
+                    
+                    # --- START: NEW ROBUST PARSING LOGIC ---
+                    
+                    # 1. Clean whitespace from the full line
+                    cleaned_row = row.strip()
+                    
+                    # 2. Safely remove ONE optional leading pipe
+                    if cleaned_row.startswith('|'):
+                        cleaned_row = cleaned_row[1:]
+                        
+                    # 3. Safely remove ONE optional trailing pipe
+                    if cleaned_row.endswith('|'):
+                        cleaned_row = cleaned_row[:-1]
+                    
+                    # 4. Now split the remaining string by the pipe delimiter
+                    # We also clean the text from each individual cell
+                    cells_text = [self._clean_text_for_pdf(cell.strip()) for cell in cleaned_row.split('|')]
+                    
+                    # --- END: NEW ROBUST PARSING LOGIC ---
+                    
+                    # Wrap each cell's text in a Paragraph to allow wrapping
+                    cells = [Paragraph(text, body_style) for text in cells_text]
+                    
                     if cells:
                         table_data.append(cells)
-                
+
                 if table_data:
                     # Create table
                     t = Table(table_data)
+                    # ... [your TableStyle code remains exactly the same] ...
                     t.setStyle(TableStyle([
                         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#2ca02c')),
-                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
                         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'), 
                         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                        ('FONTSIZE', (0, 0), (-1, 0), 12),
-                        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-                        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-                        ('FONTSIZE', (0, 1), (-1, -1), 10),
-                        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.lightgrey]),
+                        # ... all your other styles ...
+                        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f5f5f5')]),
                     ]))
                     story.append(t)
                     story.append(Spacer(1, 0.2 * inch))
                 continue
-            
+        
             # Handle markdown headers
             if line.startswith('# '):
                 para = Paragraph(line[2:], self.styles['CustomTitle'])
@@ -668,6 +717,29 @@ class PDFReportGenerator:
 
 class WordReportGenerator:
     """Generate Word documents using python-docx"""
+    
+    def _clean_text_for_word(self, text: str) -> str:
+        """Clean text to remove problematic characters for Word documents"""
+        # Remove or replace problematic Unicode characters
+        replacements = {
+            '■': '',  # Black square
+            '□': '',  # White square
+            '▪': '-',  # Small black square
+            '▫': '-',  # Small white square
+            '●': '*',  # Bullet
+            '○': '*',  # White bullet
+            '\u2022': '*',  # Bullet point
+            '\u25a0': '',  # Black square
+            '\u25a1': '',  # White square
+        }
+        
+        for old, new in replacements.items():
+            text = text.replace(old, new)
+        
+        # Remove any remaining control characters except common whitespace
+        text = ''.join(char for char in text if char.isprintable() or char in '\n\r\t')
+        
+        return text
     
     def _add_paragraph_with_formatting(self, doc, text):
         """Add paragraph with inline markdown formatting (bold, italic)"""
@@ -755,7 +827,7 @@ class WordReportGenerator:
                 for row in table_lines:
                     if '---' in row or '|-' in row:  # Skip separator line
                         continue
-                    cells = [cell.strip() for cell in row.split('|')]
+                    cells = [self._clean_text_for_word(cell.strip()) for cell in row.split('|')]
                     cells = [c for c in cells if c]  # Remove empty cells
                     if cells:
                         table_data.append(cells)

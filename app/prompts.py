@@ -2,6 +2,83 @@
 Prompts for different types of ESG reports using Grok AI
 """
 
+# CSV Cleaning Prompt for column standardization
+CSV_CLEANING_PROMPT = """You are an expert data processing assistant. Your task is to clean and standardize an uploaded CSV file to match the exact column structure of a template CSV file.
+
+TEMPLATE INFORMATION:
+Template Name: {template_name}
+Template Columns: {template_columns}
+
+SAMPLE DATA FROM TEMPLATE (first 5 rows):
+{template_sample}
+
+UPLOADED FILE DATA:
+{uploaded_data}
+
+INSTRUCTIONS:
+1. Match each column from the uploaded file to the corresponding template column
+2. If a column in the uploaded file doesn't match any template column exactly, use intelligent matching based on:
+   - Similar names (e.g., "Current Year" -> "Current")
+   - Content meaning (e.g., "Emissions Scope 1" -> "Scope 1 Emissions (tCO₂e)")
+   - Data type and context
+3. Preserve ALL data rows from the uploaded file
+4. If the uploaded file has extra columns not in the template, include them with their original names
+5. If the template has columns missing from the uploaded file, add those columns with empty values
+6. Return ONLY a valid CSV format with:
+   - First row: column headers matching the template
+   - Subsequent rows: all data from the uploaded file, mapped to the correct columns
+7. Do NOT add explanations, comments, or markdown - ONLY return the CSV data
+8. Ensure all text encoding is preserved (Arabic characters, special symbols, etc.)
+9. If a value cannot be mapped, leave it empty
+10. Preserve the exact number of data rows from the uploaded file
+
+OUTPUT FORMAT:
+Return ONLY the cleaned CSV data starting with the header row. No markdown code blocks, no explanations.
+"""
+
+# Document Content Extraction Prompt for Word/Excel files
+DOCUMENT_EXTRACTION_PROMPT = """You are an expert data extraction assistant. Your task is to extract ESG data from a document and map it to a predefined CSV template structure.
+
+TEMPLATE INFORMATION:
+Template Name: {template_name}
+Template Columns: {template_columns}
+
+SAMPLE DATA FROM TEMPLATE (first 5 rows):
+{template_sample}
+
+DOCUMENT CONTENT:
+{document_content}
+
+INSTRUCTIONS:
+1. Read through the document content carefully
+2. Identify ESG-related data points (metrics, values, sections, etc.)
+3. Map the extracted data to the template columns
+4. The document may contain:
+   - Tables with data
+   - Paragraphs with embedded metrics
+   - Bullet points with values
+   - Any other text format
+5. Extract all relevant data and organize it according to the template structure
+6. For each data point, try to identify:
+   - Section/Category
+   - Field name (metric name)
+   - Previous year value (if available)
+   - Current year value
+   - Target value (if available)
+   - Unit of measurement
+   - Any notes or additional context
+7. If a piece of information doesn't fit into template columns, add it in a Notes column
+8. Return ONLY a valid CSV format with:
+   - First row: column headers matching the template
+   - Subsequent rows: extracted data mapped to columns
+9. Do NOT add explanations, comments, or markdown - ONLY return the CSV data
+10. If data is missing for a column, leave it empty
+11. Preserve all numeric values and units exactly as they appear
+
+OUTPUT FORMAT:
+Return ONLY the CSV data starting with the header row. No markdown code blocks, no explanations.
+"""
+
 # Base system prompt for ESG reporting
 SYSTEM_PROMPT = """You are an expert ESG (Environmental, Social, and Governance) analyst and report writer. 
 Your role is to generate comprehensive, professional, and data-driven ESG reports based on the provided data.
@@ -27,7 +104,9 @@ TABLE FORMATTING RULES:
 - Use the exact column names from the data (e.g., "Prev Year", "Current", "Target", "Response")
 - Example of column to REMOVE: Target column where ALL rows = "Not Available"
 - Example of column to KEEP: Target column where SOME rows have values and some are "Not Available"
-- Standard table format: | Metric | Current Value | Unit | Target |
+- Standard table format: | Metric | Previous Year | Current Value | Unit | Target |
+- Only include "Previous Year" column if the data has previous year values
+- Do NOT duplicate the last column - each column should appear only once
 - If all metrics have data in all columns, use all columns
 - Tables MUST be included - do not skip the table section"""
 
@@ -78,14 +157,18 @@ List specific achievements with actual metrics from the data. Include this secti
 REQUIRED: Create a properly formatted table with actual data. Include this section if ANY environmental data exists.
 
 Table format - only exclude a column if it's 100% empty for all rows:
-| Metric | Current Value | Unit | Target |
-|--------|--------------|------|--------|
+| Metric | Previous Year | Current Value | Unit | Target |
+|--------|---------------|---------------|------|--------|
 | [List all metrics with at least one value] |
 
-Rules for columns:
+CRITICAL RULES:
+- Each column header should appear ONLY ONCE in the table
+- Do NOT duplicate the "Target" column or any other column
+- Only include "Previous Year" if data has previous year values
 - If "Target" has values for ANY metric, include the Target column
 - If "Target" is empty for ALL metrics, exclude the Target column
-- Same logic applies to "Prev Year", "Current", etc.
+- Same logic applies to "Previous Year", "Current Value", etc.
+- Ensure proper column alignment and no extra columns
 
 After the table, provide analysis only on metrics with actual values.
 

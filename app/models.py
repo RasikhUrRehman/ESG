@@ -63,11 +63,19 @@ class UploadResponse(BaseModel):
     uploaded_columns: List[str] = Field(description="List of all columns in the uploaded file")
 
 
+class DataWithAnalysis(BaseModel):
+    """Data record with change analysis"""
+    field_data: Dict[str, Any] = Field(description="Original field data")
+    change_percentage: Optional[float] = Field(default=None, description="Percentage change from prev year to current")
+    change_status: Optional[str] = Field(default=None, description="Status: improved, worsened, or slight")
+
+
 class ExtractionResponse(BaseModel):
     """Response model for data extraction"""
     file_id: str
     data: List[Dict[str, Any]]
     total_records: int
+    analyzed_data: Optional[List[DataWithAnalysis]] = Field(default=None, description="Data with change analysis")
 
 
 class ReportResponse(BaseModel):

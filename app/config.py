@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     
     # Upload Configuration
     MAX_UPLOAD_SIZE: int = 10 * 1024 * 1024  # 10 MB
-    ALLOWED_EXTENSIONS: List[str] = [".csv", ".xlsx", ".xls"]
+    ALLOWED_EXTENSIONS: List[str] = [".csv", ".xlsx", ".xls", ".docx"]
     
     # Template Files
     AVAILABLE_TEMPLATES: List[str] = [
