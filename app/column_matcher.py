@@ -460,6 +460,270 @@ class ColumnMatcher:
         logger.info(f"Extracted {len(extracted_data)} records with {len(all_columns)} columns from cleaned data")
         return extracted_data
     
+    async def extract_columns_only(self, file_path: Path) -> List[str]:
+        """
+        Extract only column names from uploaded file without full processing
+        Supports CSV, Excel (.xlsx, .xls), and Word (.docx) files
+        
+        Args:
+            file_path: Path to uploaded file
+            
+        Returns:
+            List of column names detected in the file
+        """
+        file_extension = file_path.suffix.lower()
+        
+        try:
+            # Handle Word documents (.docx)
+            if file_extension == '.docx':
+                logger.info("Extracting columns from Word document...")
+                # Read document content
+                document_content = self.read_word_document(file_path)
+                # Use Grok to identify columns/fields from the document
+                columns = await self.extract_columns_from_text(document_content)
+            
+            # Handle Excel files (.xlsx, .xls)
+            elif file_extension in ['.xlsx', '.xls']:
+                logger.info("Extracting columns from Excel file...")
+                try:
+                    # First try to load as structured CSV-like data
+                    uploaded_df = self.load_uploaded_file(file_path)
+                    # Check if it looks like structured data (has reasonable column names)
+                    if len(uploaded_df.columns) > 3 and not all('Unnamed' in str(col) for col in uploaded_df.columns):
+                        columns = [col for col in uploaded_df.columns if col and str(col).strip() and not str(col).startswith('Unnamed:')]
+                    else:
+                        # Treat as document with unstructured content
+                        document_content = self.read_excel_content(file_path)
+                        columns = await self.extract_columns_from_text(document_content)
+                except Exception as e:
+                    logger.warning(f"Could not process as structured Excel, treating as document: {e}")
+                    document_content = self.read_excel_content(file_path)
+                    columns = await self.extract_columns_from_text(document_content)
+            
+            # Handle CSV files
+            elif file_extension == '.csv':
+                logger.info("Extracting columns from CSV file...")
+                uploaded_df = self.load_uploaded_file(file_path)
+                columns = [col for col in uploaded_df.columns if col and str(col).strip() and not str(col).startswith('Unnamed:')]
+            
+            else:
+                raise ValueError(f"Unsupported file format: {file_extension}")
+            
+            logger.info(f"Extracted {len(columns)} columns from file")
+            return sorted(columns)
+            
+        except Exception as e:
+            logger.error(f"Error extracting columns: {e}")
+            raise
+    
+    async def extract_columns_from_text(self, text_content: str) -> List[str]:
+        """
+        Use Grok AI to extract/identify column names/fields from unstructured text
+        
+        Args:
+            text_content: Text content from document
+            
+        Returns:
+            List of identified column/field names
+        """
+        try:
+            prompt = f"""Analyze the following document content and identify all the data fields/columns that appear to contain ESG-related information.
+
+Document Content:
+{text_content[:5000]}  # Limit to first 5000 characters
+
+Please extract a list of field names/column headers that represent data points in this document.
+Return ONLY a comma-separated list of field names, nothing else.
+For example: "Company Name, Year, Total Emissions, Energy Consumption, Water Usage"
+"""
+            
+            logger.info("Using Grok to extract columns from document text...")
+            response = await asyncio.to_thread(
+                self.grok_client.chat.completions.create,
+                model=settings.GROK_MODEL,
+                messages=[
+                    {"role": "system", "content": "You are a data extraction expert. Extract field names from documents and return them as a simple comma-separated list."},
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=1000,
+                temperature=0.3
+            )
+            
+            columns_text = response.choices[0].message.content.strip()
+            
+            # Parse the comma-separated list
+            columns = [col.strip() for col in columns_text.split(',') if col.strip()]
+            
+            logger.info(f"Extracted {len(columns)} columns from text using Grok")
+            return columns
+            
+        except Exception as e:
+            logger.error(f"Error extracting columns from text with Grok: {e}")
+            return []
+    
+    async def process_file_with_mappings(
+        self,
+        file_path: Path,
+        mappings: List[Any]
+    ) -> Tuple[ColumnMatchResult, List[Dict[str, Any]]]:
+        """
+        Process file with user-provided column mappings
+        
+        Args:
+            file_path: Path to uploaded file
+            mappings: List of ColumnMapping objects with user-confirmed mappings
+            
+        Returns:
+            Tuple of (ColumnMatchResult, extracted_data)
+        """
+        file_extension = file_path.suffix.lower()
+        
+        # Create mapping dictionary
+        mapping_dict = {}
+        for mapping in mappings:
+            if mapping.uploaded_column:
+                mapping_dict[mapping.template_column] = mapping.uploaded_column
+        
+        logger.info(f"Processing file with {len(mapping_dict)} user-provided mappings")
+        
+        # Load the raw file data
+        if file_extension == '.docx':
+            # For Word documents, extract with Grok then apply mappings
+            document_content = self.read_word_document(file_path)
+            raw_df = await self.extract_from_document_with_grok(document_content)
+        elif file_extension in ['.xlsx', '.xls']:
+            try:
+                raw_df = self.load_uploaded_file(file_path)
+                if len(raw_df.columns) <= 3 or all('Unnamed' in str(col) for col in raw_df.columns):
+                    document_content = self.read_excel_content(file_path)
+                    raw_df = await self.extract_from_document_with_grok(document_content)
+            except Exception:
+                document_content = self.read_excel_content(file_path)
+                raw_df = await self.extract_from_document_with_grok(document_content)
+        elif file_extension == '.csv':
+            raw_df = self.load_uploaded_file(file_path)
+        else:
+            raise ValueError(f"Unsupported file format: {file_extension}")
+        
+        # Apply column mappings to create mapped dataframe
+        mapped_df = await self.apply_column_mappings(raw_df, mapping_dict)
+        
+        # Create match result
+        match_result = self.create_match_result_from_mappings(mapped_df, mapping_dict)
+        
+        # Extract data
+        extracted_data = self.extract_required_data(mapped_df, match_result)
+        
+        return match_result, extracted_data
+    
+    async def apply_column_mappings(
+        self,
+        raw_df: pd.DataFrame,
+        mapping_dict: Dict[str, str]
+    ) -> pd.DataFrame:
+        """
+        Apply user-provided column mappings to raw dataframe
+        Uses Grok to intelligently map and transform the data
+        
+        Args:
+            raw_df: Raw DataFrame from uploaded file
+            mapping_dict: Dictionary mapping template columns to uploaded columns
+            
+        Returns:
+            DataFrame with columns mapped according to user selection
+        """
+        try:
+            # If the dataframe already has columns similar to template, use direct mapping
+            # Otherwise, use Grok to transform the data
+            
+            # Build the mapped dataframe
+            mapped_data = {}
+            
+            # First, add mapped columns
+            for template_col, uploaded_col in mapping_dict.items():
+                if uploaded_col in raw_df.columns:
+                    mapped_data[template_col] = raw_df[uploaded_col]
+                else:
+                    # Column not found, create empty column
+                    mapped_data[template_col] = pd.Series([None] * len(raw_df))
+            
+            # Add unmapped template columns as empty
+            for template_col in self.template_columns:
+                if template_col not in mapped_data:
+                    mapped_data[template_col] = pd.Series([None] * len(raw_df))
+            
+            # Add extra columns from uploaded file that weren't mapped
+            for col in raw_df.columns:
+                if col not in mapping_dict.values() and col not in mapped_data:
+                    mapped_data[col] = raw_df[col]
+            
+            mapped_df = pd.DataFrame(mapped_data)
+            
+            logger.info(f"Applied column mappings. Result: {len(mapped_df.columns)} columns, {len(mapped_df)} rows")
+            return mapped_df
+            
+        except Exception as e:
+            logger.error(f"Error applying column mappings: {e}")
+            raise
+    
+    def create_match_result_from_mappings(
+        self,
+        mapped_df: pd.DataFrame,
+        mapping_dict: Dict[str, str]
+    ) -> ColumnMatchResult:
+        """
+        Create a ColumnMatchResult based on user mappings
+        
+        Args:
+            mapped_df: DataFrame after applying mappings
+            mapping_dict: User-provided column mappings
+            
+        Returns:
+            ColumnMatchResult
+        """
+        # Get columns from mapped dataframe
+        mapped_columns = [col for col in mapped_df.columns if col and str(col).strip()]
+        
+        # Matched columns are those in the mapping
+        matched = list(mapping_dict.keys())
+        
+        # Extra columns not in template
+        extra_columns = list(set(mapped_columns) - set(self.template_columns))
+        
+        # Missing columns from template (not mapped)
+        missing_columns = list(set(self.template_columns) - set(matched))
+        
+        # Calculate match percentage
+        if len(self.template_columns) > 0:
+            match_percentage = (len(matched) / len(self.template_columns)) * 100
+        else:
+            match_percentage = 100.0
+        
+        has_ambiguity = bool(extra_columns or missing_columns)
+        ambiguity_message = None
+        
+        if has_ambiguity:
+            messages = []
+            if missing_columns:
+                messages.append(f"Missing {len(missing_columns)} template column(s): {', '.join(missing_columns)}")
+            if extra_columns:
+                messages.append(f"Added {len(extra_columns)} extra column(s): {', '.join(extra_columns)}")
+            ambiguity_message = " | ".join(messages)
+        
+        result = ColumnMatchResult(
+            matched_columns=sorted(matched),
+            unmatched_uploaded=sorted(extra_columns),
+            unmatched_template=sorted(missing_columns),
+            match_percentage=round(match_percentage, 2),
+            total_uploaded_columns=len(mapped_columns),
+            total_template_columns=len(self.template_columns),
+            has_ambiguity=has_ambiguity,
+            ambiguity_message=ambiguity_message
+        )
+        
+        logger.info(f"Created match result from mappings: {match_percentage}% match, {len(matched)} matched columns")
+        return result
+    
     async def process_file(self, file_path: Path) -> Tuple[ColumnMatchResult, List[Dict[str, Any]]]:
         """
         Process uploaded file: load, clean with Grok, and extract data
@@ -710,6 +974,8 @@ def calculate_change_analysis(extracted_data: List[Dict[str, Any]]) -> List[Dict
                     lower_is_better = any(keyword in field_name.lower() for keyword in LOWER_IS_BETTER)
                     
                     # Determine status based on change and field type
+                    if abs(change) == 0:  # Within 5% considered slight
+                        analysis["change_status"] = "unchanged"
                     if abs(change) <= 5:  # Within 5% considered slight
                         analysis["change_status"] = "slight"
                     elif change > 5:  # Increased

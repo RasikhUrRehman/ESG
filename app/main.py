@@ -14,7 +14,8 @@ import uuid
 from .config import settings
 from .models import (
     ReportFormat, TemplateType, ColumnMatchResult,
-    UploadResponse, ExtractionResponse, ReportResponse, ReportRequest
+    UploadResponse, ExtractionResponse, ReportResponse, ReportRequest,
+    CompareColumnsResponse, ColumnMappingRequest, MapColumnsResponse, ColumnMapping
 )
 from .column_matcher import ColumnMatcher, get_data_summary, format_data_for_report, calculate_change_analysis
 from .report_generator import ReportGenerator
@@ -49,6 +50,8 @@ app.add_middleware(
 # Store file metadata in memory (use database in production)
 file_storage = {}
 extraction_storage = {}
+# Store intermediate processing data (raw uploaded file data before mapping)
+intermediate_storage = {}
 
 
 @app.on_event("startup")
@@ -98,13 +101,196 @@ async def list_templates():
     }
 
 
+@app.post("/compare-columns", response_model=CompareColumnsResponse)
+async def compare_columns(
+    file: UploadFile = File(...),
+    template: str = Form(...)
+):
+    """
+    Upload a file and compare columns with selected template
+    This is the first step - it returns columns for user review
+    
+    Args:
+        file: Uploaded CSV/Excel/Word file
+        template: Template name to match against
+        
+    Returns:
+        CompareColumnsResponse with template and uploaded file columns
+    """
+    try:
+        # Validate file extension
+        if not is_allowed_file(file.filename, settings.ALLOWED_EXTENSIONS):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid file type. Allowed: {settings.ALLOWED_EXTENSIONS}"
+            )
+        
+        # Validate template
+        if template not in settings.AVAILABLE_TEMPLATES:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid template. Available templates: {settings.AVAILABLE_TEMPLATES}"
+            )
+        
+        # Read file content
+        file_content = await file.read()
+        
+        # Check file size
+        if len(file_content) > settings.MAX_UPLOAD_SIZE:
+            raise HTTPException(
+                status_code=400,
+                detail=f"File too large. Maximum size: {settings.MAX_UPLOAD_SIZE / (1024*1024)} MB"
+            )
+        
+        # Save uploaded file
+        file_path = save_uploaded_file(file_content, file.filename, settings.UPLOADS_DIR)
+        
+        # Generate unique file ID
+        file_id = generate_unique_id()
+        
+        # Initialize column matcher
+        matcher = ColumnMatcher(template)
+        
+        # Extract columns from file (without full processing)
+        uploaded_columns = await matcher.extract_columns_only(file_path)
+        
+        # Get template columns
+        template_columns = matcher.get_template_columns()
+        
+        # Store intermediate data for later mapping
+        intermediate_storage[file_id] = {
+            "file_id": file_id,
+            "filename": file.filename,
+            "template": template,
+            "file_path": str(file_path),
+            "uploaded_columns": uploaded_columns,
+            "template_columns": template_columns
+        }
+        
+        logger.info(f"File uploaded for column comparison: {file_id}")
+        
+        return CompareColumnsResponse(
+            file_id=file_id,
+            filename=file.filename,
+            template_used=template,
+            template_columns=template_columns,
+            uploaded_columns=uploaded_columns,
+            message=f"Found {len(uploaded_columns)} columns in uploaded file. Please review and confirm mapping."
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error comparing columns: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/map-columns", response_model=MapColumnsResponse)
+async def map_columns(request: ColumnMappingRequest):
+    """
+    Map columns based on user confirmation and extract data
+    This is the second step - processes data with user-confirmed mappings
+    
+    Args:
+        request: ColumnMappingRequest with file_id and column mappings
+        
+    Returns:
+        MapColumnsResponse with extracted and mapped data
+    """
+    try:
+        # Validate file exists in intermediate storage
+        if request.file_id not in intermediate_storage:
+            raise HTTPException(
+                status_code=404,
+                detail="File not found or session expired. Please upload the file again."
+            )
+        
+        intermediate_data = intermediate_storage[request.file_id]
+        file_path = Path(intermediate_data["file_path"])
+        template = intermediate_data["template"]
+        filename = intermediate_data["filename"]
+        
+        # Initialize column matcher
+        matcher = ColumnMatcher(template)
+        
+        # Process file with user-provided mappings
+        match_result, extracted_data = await matcher.process_file_with_mappings(
+            file_path,
+            request.mappings
+        )
+        
+        # Store file metadata and extracted data
+        file_storage[request.file_id] = {
+            "file_id": request.file_id,
+            "filename": filename,
+            "template": template,
+            "file_path": str(file_path),
+            "match_result": match_result.dict()
+        }
+        
+        extraction_storage[request.file_id] = extracted_data
+        
+        # Calculate change analysis and add to each record
+        data_with_analysis = calculate_change_analysis(extracted_data)
+        
+        # Merge change analysis into extracted data
+        enriched_data = []
+        for i, record in enumerate(extracted_data):
+            enriched_record = record.copy()
+            if i < len(data_with_analysis):
+                analysis = data_with_analysis[i]
+                enriched_record['change_percentage'] = analysis.get('change_percentage')
+                enriched_record['status'] = analysis.get('change_status')
+            else:
+                enriched_record['change_percentage'] = None
+                enriched_record['status'] = None
+            enriched_data.append(enriched_record)
+        
+        # Clean up intermediate storage
+        del intermediate_storage[request.file_id]
+        
+        logger.info(f"File processed with user mappings: {request.file_id}")
+        
+        # Determine appropriate message based on match result
+        if match_result.has_ambiguity:
+            missing_count = len(match_result.unmatched_template)
+            extra_count = len(match_result.unmatched_uploaded)
+            
+            if missing_count > 0 and extra_count > 0:
+                message = f"Data mapped: {missing_count} columns unmapped, {extra_count} extra columns preserved"
+            elif missing_count > 0:
+                message = f"Data mapped with {missing_count} unmapped column(s)"
+            elif extra_count > 0:
+                message = f"Data mapped with {extra_count} extra column(s) preserved"
+            else:
+                message = "Data successfully mapped"
+        else:
+            message = "Data perfectly mapped to template"
+        
+        return MapColumnsResponse(
+            file_id=request.file_id,
+            filename=filename,
+            template_used=template,
+            match_result=match_result,
+            message=message,
+            data=enriched_data
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error mapping columns: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/upload", response_model=UploadResponse)
 async def upload_file(
     file: UploadFile = File(...),
     template: str = Form(...)
 ):
     """
-    Upload a file and clean columns using Grok AI to match selected template
+    [DEPRECATED] Upload a file and clean columns using Grok AI to match selected template
+    This endpoint is deprecated. Use /compare-columns followed by /map-columns instead.
     
     Args:
         file: Uploaded CSV/Excel file
