@@ -141,26 +141,16 @@ class ColumnMatcher:
         """Get the list of column names from the template"""
         return self.template_columns
     
-    def load_template_sample(self) -> str:
+    def get_template_header(self) -> str:
         """
-        Load sample rows from the template file
+        Get template column headers as CSV string
         
         Returns:
-            String representation of first 5 rows from template
+            CSV string with just the column headers
         """
-        if not self.template_path or not self.template_path.exists():
-            logger.warning(f"Template file not found: {self.template_path}")
-            return "Template sample not available"
-        
-        try:
-            df = pd.read_csv(self.template_path, encoding='utf-8')
-            # Get first 5 rows
-            sample_df = df.head(5)
-            # Convert to CSV string
-            return sample_df.to_csv(index=False)
-        except Exception as e:
-            logger.error(f"Error loading template sample: {e}")
-            return "Template sample not available"
+        # Simply return the column names as a CSV header
+        # No need to load the actual template file
+        return ",".join(self.template_columns)
     
     def load_uploaded_file(self, file_path: Path) -> pd.DataFrame:
         """
@@ -269,8 +259,8 @@ class ColumnMatcher:
             Cleaned DataFrame matching the template structure
         """
         try:
-            # Get template sample
-            template_sample = self.load_template_sample()
+            # Get template headers
+            template_headers = self.get_template_header()
             
             # Convert uploaded data to CSV string (limit to first 100 rows for API)
             uploaded_csv = uploaded_df.head(100).to_csv(index=False)
@@ -279,7 +269,7 @@ class ColumnMatcher:
             prompt = CSV_CLEANING_PROMPT.format(
                 template_name=self.template_name,
                 template_columns=", ".join(self.template_columns),
-                template_sample=template_sample,
+                template_sample=template_headers,
                 uploaded_data=uploaded_csv
             )
             
@@ -327,14 +317,14 @@ class ColumnMatcher:
             DataFrame with extracted data mapped to template structure
         """
         try:
-            # Get template sample
-            template_sample = self.load_template_sample()
+            # Get template headers
+            template_headers = self.get_template_header()
             
             # Format the prompt
             prompt = DOCUMENT_EXTRACTION_PROMPT.format(
                 template_name=self.template_name,
                 template_columns=", ".join(self.template_columns),
-                template_sample=template_sample,
+                template_sample=template_headers,
                 document_content=document_content[:15000]  # Limit content size
             )
             
@@ -639,23 +629,45 @@ For example: "Company Name, Year, Total Emissions, Energy Consumption, Water Usa
             # Build the mapped dataframe
             mapped_data = {}
             
+            logger.info(f"Raw DataFrame columns: {list(raw_df.columns)}")
+            logger.info(f"Mapping dict: {mapping_dict}")
+            
             # First, add mapped columns
             for template_col, uploaded_col in mapping_dict.items():
+                logger.info(f"Processing mapping: {template_col} <- {uploaded_col} (type: {type(uploaded_col)})")
+                
+                # Handle case where uploaded_col might be empty string or None
+                if not uploaded_col or uploaded_col == "":
+                    mapped_data[template_col] = [None] * len(raw_df)
+                    continue
+                
                 if uploaded_col in raw_df.columns:
-                    mapped_data[template_col] = raw_df[uploaded_col]
+                    # Get the column as a Series and convert to list
+                    col_series = raw_df[uploaded_col]
+                    if isinstance(col_series, pd.DataFrame):
+                        # If somehow we got a DataFrame (duplicate columns), take first column
+                        logger.warning(f"Column {uploaded_col} returned DataFrame, taking first column")
+                        mapped_data[template_col] = col_series.iloc[:, 0].tolist()
+                    else:
+                        mapped_data[template_col] = col_series.tolist()
                 else:
                     # Column not found, create empty column
-                    mapped_data[template_col] = pd.Series([None] * len(raw_df))
+                    logger.warning(f"Column {uploaded_col} not found in raw_df")
+                    mapped_data[template_col] = [None] * len(raw_df)
             
             # Add unmapped template columns as empty
             for template_col in self.template_columns:
                 if template_col not in mapped_data:
-                    mapped_data[template_col] = pd.Series([None] * len(raw_df))
+                    mapped_data[template_col] = [None] * len(raw_df)
             
             # Add extra columns from uploaded file that weren't mapped
             for col in raw_df.columns:
                 if col not in mapping_dict.values() and col not in mapped_data:
-                    mapped_data[col] = raw_df[col]
+                    col_series = raw_df[col]
+                    if isinstance(col_series, pd.DataFrame):
+                        mapped_data[col] = col_series.iloc[:, 0].tolist()
+                    else:
+                        mapped_data[col] = col_series.tolist()
             
             mapped_df = pd.DataFrame(mapped_data)
             
@@ -663,7 +675,7 @@ For example: "Company Name, Year, Total Emissions, Energy Consumption, Water Usa
             return mapped_df
             
         except Exception as e:
-            logger.error(f"Error applying column mappings: {e}")
+            logger.error(f"Error applying column mappings: {e}", exc_info=True)
             raise
     
     def create_match_result_from_mappings(
