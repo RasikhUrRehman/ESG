@@ -63,11 +63,19 @@ class UploadResponse(BaseModel):
     uploaded_columns: List[str] = Field(description="List of all columns in the uploaded file")
 
 
+class DataWithAnalysis(BaseModel):
+    """Data record with change analysis"""
+    field_data: Dict[str, Any] = Field(description="Original field data")
+    change_percentage: Optional[float] = Field(default=None, description="Percentage change from prev year to current")
+    change_status: Optional[str] = Field(default=None, description="Status: improved, worsened, or slight")
+
+
 class ExtractionResponse(BaseModel):
     """Response model for data extraction"""
     file_id: str
     data: List[Dict[str, Any]]
     total_records: int
+    analyzed_data: Optional[List[DataWithAnalysis]] = Field(default=None, description="Data with change analysis")
 
 
 class ReportResponse(BaseModel):
@@ -76,3 +84,35 @@ class ReportResponse(BaseModel):
     report_format: str
     download_url: str
     message: str
+
+
+class CompareColumnsResponse(BaseModel):
+    """Response model for column comparison"""
+    file_id: str
+    filename: str
+    template_used: str
+    template_columns: List[str] = Field(description="List of columns in the template")
+    uploaded_columns: List[str] = Field(description="List of columns detected in the uploaded file")
+    message: str
+
+
+class ColumnMapping(BaseModel):
+    """Mapping between template column and uploaded file column"""
+    template_column: str = Field(description="Column name from the template")
+    uploaded_column: Optional[str] = Field(description="Corresponding column name from uploaded file (None if not mapped)")
+
+
+class ColumnMappingRequest(BaseModel):
+    """Request model for column mapping"""
+    file_id: str = Field(description="ID of the uploaded file")
+    mappings: List[ColumnMapping] = Field(description="List of column mappings from template to uploaded file")
+
+
+class MapColumnsResponse(BaseModel):
+    """Response model for column mapping"""
+    file_id: str
+    filename: str
+    template_used: str
+    match_result: ColumnMatchResult
+    message: str
+    data: List[Dict[str, Any]] = Field(description="Extracted and mapped data with change analysis (includes 'change_percentage' and 'status' fields)")
